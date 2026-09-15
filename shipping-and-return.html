@@ -3,104 +3,356 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shipping & Returns | TITATEC</title>
-<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap">
+<title>Shipping &amp; Returns Policy - TITATEC Lighting</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Manrope',sans-serif; color:#1A1A1A; background:#FFFFFF; line-height:1.7; padding:40px 20px; }
-.container { max-width:900px; margin:0 auto; }
-h1 { font-family:'Space Grotesk',sans-serif; font-size:36px; color:#0A1628; margin-bottom:8px; }
-.subtitle { color:#6B7280; font-size:14px; margin-bottom:40px; }
-.back-link { display:inline-block; margin-bottom:30px; color:#00A885; text-decoration:none; font-weight:600; }
-.back-link:hover { text-decoration:underline; }
-h2 { font-family:'Space Grotesk',sans-serif; font-size:22px; color:#0A1628; margin:30px 0 12px; }
-h3 { font-family:'Space Grotesk',sans-serif; font-size:18px; color:#0A1628; margin:20px 0 10px; }
-p { color:#374151; margin-bottom:16px; font-size:15px; }
-ul { padding-left:24px; margin-bottom:16px; }
-ul li { color:#374151; font-size:15px; margin-bottom:8px; }
-.footer-note { margin-top:50px; padding-top:20px; border-top:1px solid #E9ECEF; color:#6B7280; font-size:13px; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', Roboto, system-ui, -apple-system, Arial, sans-serif;
+  background: #f4f7fc;
+  color: #1e293b;
+  line-height: 1.7;
+  padding: 0;
+  min-height: 100vh;
+}
+:root {
+  --accent: #D7A63A;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+.top-bar {
+  background: #ffffff;
+  border-bottom: 1px solid #e5ebf3;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.top-bar .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #0f172a;
+}
+.top-bar .brand img { height: 40px; display: block; }
+.top-bar .brand-name { font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+.top-bar .brand-sub { font-size: 10px; color: #64748b; letter-spacing: 2px; margin-top: 2px; }
+.top-bar .back-link { font-size: 14px; color: #2563eb; text-decoration: none; font-weight: 600; }
+.top-bar .back-link:hover { text-decoration: underline; }
+.page-wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 60px; }
+.hero {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 40px 44px;
+  border: 1px solid #e5ebf3;
+  box-shadow: 0 4px 20px rgba(0,20,40,0.04);
+  margin-bottom: 32px;
+}
+.hero .kicker { font-size: 12px; color: #2563eb; font-weight: 700; letter-spacing: 3px; margin-bottom: 12px; }
+.hero h1 { font-size: 36px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; margin-bottom: 14px; line-height: 1.2; }
+.hero .intro { font-size: 16px; color: #475569; line-height: 1.7; margin-bottom: 20px; }
+.hero .meta { font-size: 13px; color: #94a3b8; padding-top: 20px; border-top: 1px solid #eef2f6; }
+.hero .meta strong { color: #475569; font-weight: 600; }
+.section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px 40px;
+  border: 1px solid #e5ebf3;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0,20,40,0.03);
+}
+.section h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #eef2f6;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section h2 .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.section p { color: #334155; margin-bottom: 12px; font-size: 15px; }
+.section p:last-child { margin-bottom: 0; }
+.section ul { list-style: none; padding-left: 0; margin: 12px 0; }
+.section ul li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 10px;
+  color: #334155;
+  font-size: 15px;
+}
+.section ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 15px;
+}
+.section ul.cross li::before { content: '✕'; color: #dc2626; }
+.section .highlight {
+  background: #eff6ff;
+  border-left: 4px solid #2563eb;
+  padding: 14px 20px;
+  border-radius: 6px;
+  margin: 16px 0;
+  font-size: 14px;
+  color: #1e40af;
+}
+.section .highlight strong { color: #1e3a8a; }
+.section .contact-line {
+  background: #f8fafc;
+  border: 1px solid #e5ebf3;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 16px;
+  font-size: 15px;
+}
+.section .contact-line a { color: #2563eb; text-decoration: none; font-weight: 600; }
+.section .contact-line a:hover { text-decoration: underline; }
+.section a { color: #2563eb; }
+.site-footer{background:#E8E8E8 !important;color:#2D3748;padding:70px 0 30px;margin-top:60px}
+.site-footer .container{max-width:1280px;margin:0 auto;padding:0 32px}
+.site-footer .footer-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr 1.1fr;gap:36px;margin-bottom:46px}
+.site-footer .footer-brand .brand{display:block;margin-bottom:16px;text-decoration:none}
+.site-footer .footer-brand p{font-size:.88rem;max-width:320px;color:#2D3748;line-height:1.6}
+.site-footer .socials{display:flex;gap:22px;margin-top:20px}
+.site-footer .socials a{width:52px;height:52px;border-radius:8px;border:1px solid rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;color:#2D3748;text-decoration:none;transition:all .2s ease}
+.site-footer .socials a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+.site-footer .socials svg{width:26px;height:26px}
+.site-footer .footer-col h4{font-family:var(--font-mono);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#1A202C;margin-bottom:16px}
+.site-footer .footer-col a{display:block;font-size:.88rem;padding:4px 0;color:#2D3748;text-decoration:none;transition:color .2s ease}
+.site-footer .footer-col a:hover{color:var(--accent)}
+.site-footer .footer-bottom{border-top:1px solid rgba(0,0,0,.12);padding-top:24px;display:flex;flex-direction:column;gap:8px;font-size:.76rem;color:#4A5568}
+.site-footer .footer-bottom .legal-note{color:#2D3748}
+@media (max-width:980px){
+  .site-footer .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .site-footer .footer-grid{grid-template-columns:1fr}
+  .site-footer .container{padding:0 20px}
+  .top-bar{padding:12px 20px}
+  .top-bar .brand-name{font-size:16px}
+  .page-wrap{padding:24px 16px 40px}
+  .hero{padding:28px 24px;border-radius:12px}
+  .hero h1{font-size:26px}
+  .hero .intro{font-size:15px}
+  .section{padding:24px 22px;border-radius:12px}
+  .section h2{font-size:17px}
+  .section h2 .num{width:28px;height:28px;font-size:13px}
+  .section p,.section ul li{font-size:14px}
+}
 </style>
 </head>
 <body>
-<div class="container">
-  <a href="/" class="back-link">← Back to Home</a>
-  <h1>Shipping &amp; Returns Policy</h1>
-  <p class="subtitle">Last Updated: September 2026</p>
 
-  <h2>Shipping Policy</h2>
-
-  <h3>Shipping Coverage</h3>
-  <p>We mainly provide shipping service to the continental United States. We do not support regular international shipping temporarily. Alaska, Hawaii and U.S. territories need to contact us in advance to confirm shipping feasibility and freight.</p>
-
-  <h3>Pre-order Confirmation Rule</h3>
-  <p>Buyers outside continental US must contact us by email before placing an order to confirm shipping matters. After placing an order, you need to reply to our confirmation email within 48 hours, otherwise the order will be cancelled automatically. All extra overseas shipping fees shall be borne by buyers, and all tariffs and import taxes shall be paid by buyers themselves.</p>
-
-  <h3>Order Processing Time</h3>
-  <p>All orders within continental US will be arranged for shipment within 1-2 working days after payment is confirmed, excluding weekends and legal holidays.</p>
-
-  <h3>Shipping Fee</h3>
-  <ul>
-    <li><strong>Standard Shipping (Continental US Only):</strong></li>
-    <ul>
-      <li>Order over $99: <strong>Free Shipping</strong></li>
-      <li>Order under $99: Fixed shipping fee <strong>$7.99</strong></li>
-    </ul>
-    <li><strong>Delivery time:</strong> 5-8 business days</li>
-  </ul>
-
-  <h3>Logistics Carrier</h3>
-  <p>We will choose USPS, UPS, FedEx and other mainstream logistics distributors to deliver goods according to actual situation.</p>
-
-  <h3>Order Tracking</h3>
-  <p>After delivery, you will receive an email with tracking number, you can check logistics status in real time.</p>
-
-  <h3>Shipping Restriction</h3>
-  <p>We do not support delivery to PO box addresses. Goods may be delayed due to bad weather and logistics peak season, which is beyond our control.</p>
-
-  <h3>Shipping Consultation</h3>
-  <p>If you have any shipping questions, please contact us via email: <a href="mailto:James@capitecinc.com">James@capitecinc.com</a></p>
-
-  <h2>Returns Policy</h2>
-
-  <h3>30-Day Return Policy</h3>
-  <p>We have a 30-day return policy, which means you have 30 days after receiving your item to request a return. To be eligible for a return, your item must be in the same condition that you received it, unworn or unused, with tags, and in its original packaging. You'll also need the receipt or proof of purchase.</p>
-
-  <h3>How to Start a Return</h3>
-  <p>To start a return, you can contact us at <a href="mailto:James@capitecinc.com">James@capitecinc.com</a>.</p>
-  <p><strong>Return Address:</strong> 21 Greenleaf, Irvine, CA 92604</p>
-  <p>Please note all returned items must be sent to our warehouse address above. Items sent back to us without first requesting a return will not be accepted.</p>
-
-  <h3>Damages and Issues</h3>
-  <p>Please inspect your order upon reception and contact us immediately if the item is defective, damaged, or if you receive the wrong item, so that we can evaluate the issue and make it right.</p>
-
-  <h3>Exceptions / Non-Returnable Items</h3>
-  <p>Custom-made products, personalized items, clearance sale items and gift cards are non-refundable and non-returnable. Please get in touch if you have questions or concerns about your specific item.</p>
-
-  <h3>Exchanges</h3>
-  <p>The fastest way to ensure you get what you want is to return the item you have, and once the return is accepted, make a separate purchase for the new item.</p>
-
-  <h3>Shipping Fee Rule</h3>
-  <ul>
-    <li>We cover return shipping costs if items are defective, damaged or shipped incorrectly due to our fault.</li>
-    <li>Customers are responsible for return shipping fees for voluntary non-quality related returns.</li>
-  </ul>
-
-  <h3>Refunds</h3>
-  <p>We will notify you once we've received and inspected your return, and let you know if the refund was approved. If approved, you'll be automatically refunded on your original payment method within 10 business days. Please remember it can take some time for your bank or credit card company to process and post the refund. If more than 15 business days have passed since we approved your return, please contact us at <a href="mailto:James@capitecinc.com">James@capitecinc.com</a>.</p>
-
-  <h2>Contact Information</h2>
-  <ul>
-    <li><strong>Business Hours:</strong> 9AM – 5PM, business workdays</li>
-    <li><strong>Phone:</strong> +1 949-685-3792</li>
-    <li><strong>Email:</strong> <a href="mailto:James@capitecinc.com">James@capitecinc.com</a></li>
-    <li><strong>Official Address:</strong> 2441 N TUSTIN AVE UNIT# H, Santa Ana, California 92705-1661</li>
-  </ul>
-
-  <p style="margin-top:20px; color:#6B7280; font-size:14px;">This Shipping &amp; Returns Policy is issued by TITATEC, operated by Capitec Inc.</p>
-
-  <div class="footer-note">
-    <p>&copy; 2026 TITATEC &middot; Capitec Inc. All rights reserved.</p>
-  </div>
+<div class="top-bar">
+  <a href="https://gondolalights.com" class="brand">
+    <img src="https://gondolalights.com/TITATEC-logo-400.png" alt="TITATEC Lighting" />
+    <div>
+      <div class="brand-name">TITATEC LIGHTING</div>
+      <div class="brand-sub">PROFESSIONAL LED LIGHTING</div>
+    </div>
+  </a>
+  <a href="https://gondolalights.com" class="back-link">← Back to Home</a>
 </div>
+
+<div class="page-wrap">
+
+  <div class="hero">
+    <div class="kicker">LEGAL DOCUMENT</div>
+    <h1>Shipping &amp; Returns Policy</h1>
+    <p class="intro">
+      This Shipping &amp; Returns Policy applies to all orders placed through our online store at <strong>https://shop.gondolalights.com</strong>. By placing an order, you agree to the terms outlined below.
+    </p>
+    <div class="meta">
+      <strong>Last Updated:</strong> May 20, 2026
+    </div>
+  </div>
+
+  <!-- SHIPPING -->
+  <div class="section">
+    <h2><span class="num">1</span> Shipping Coverage</h2>
+    <p>We mainly provide shipping service to the <strong>continental United States</strong>. We do not support regular international shipping at this time. Alaska, Hawaii, and U.S. territories need to contact us in advance to confirm shipping feasibility and freight.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">2</span> Pre-Order Confirmation Rule</h2>
+    <p>Buyers outside the continental US must contact us by email <strong>before placing an order</strong> to confirm shipping matters. After placing an order, you need to reply to our confirmation email within <strong>48 hours</strong>; otherwise, the order will be cancelled automatically. All extra overseas shipping fees shall be borne by buyers, and all tariffs and import taxes shall be paid by buyers themselves.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">3</span> Order Processing Time</h2>
+    <p>All orders within the continental US will be arranged for shipment within <strong>1–2 business days</strong> after payment is confirmed, excluding weekends and legal holidays.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">4</span> Shipping Fee &amp; Delivery Time</h2>
+    <p><strong>Standard Shipping (Continental US Only):</strong></p>
+    <ul>
+      <li>Order over <strong>$99</strong>: Free Shipping</li>
+      <li>Order under <strong>$99</strong>: Fixed shipping fee <strong>$7.99</strong></li>
+      <li>Delivery time: <strong>5–8 business days</strong></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">5</span> Logistics Carrier &amp; Tracking</h2>
+    <p>We will choose USPS, UPS, FedEx, and other mainstream logistics distributors to deliver goods according to actual situation.</p>
+    <p>After delivery, you will receive an email with a tracking number, and you can check logistics status in real time.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">6</span> Shipping Restrictions</h2>
+    <ul>
+      <li>We do not support delivery to P.O. box addresses.</li>
+      <li>Goods may be delayed due to bad weather and logistics peak season, which is beyond our control.</li>
+    </ul>
+  </div>
+
+  <!-- ★ 新增：日本发货说明 -->
+  <div class="section">
+    <h2><span class="num">7</span> Orders Shipping to Japan</h2>
+    <div class="highlight">
+      <strong>For orders shipping to Japan:</strong> Items will be shipped internationally from our Shanghai-China warehouse. Import duties and customs clearance fees shall be borne by the buyer. Transit time including customs clearance is <strong>10–20 business days</strong>.
+    </div>
+  </div>
+
+  <!-- RETURNS -->
+  <div class="section">
+    <h2><span class="num">8</span> 30-Day Return Policy</h2>
+    <p>We have a <strong>30-day return policy</strong>, which means you have 30 days after receiving your item to request a return. To be eligible for a return, your item must be in the same condition that you received it, unworn or unused, with tags, and in its original packaging. You'll also need the receipt or proof of purchase.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">9</span> How to Start a Return</h2>
+    <p>To start a return, please contact us at <a href="mailto:james@gondolalights.com">james@gondolalights.com</a>.</p>
+    <div class="highlight">
+      <strong>Return Address:</strong><br>
+      21 Greenleaf, Irvine, CA 92604
+    </div>
+    <p>Please note all returned items must be sent to our warehouse address above. Items sent back to us without first requesting a return will not be accepted.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">10</span> Damages and Issues</h2>
+    <p>Please inspect your order upon reception and contact us immediately if the item is defective, damaged, or if you receive the wrong item, so that we can evaluate the issue and make it right.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">11</span> Exceptions / Non-Returnable Items</h2>
+    <p>The following items are <strong>non-refundable and non-returnable</strong>:</p>
+    <ul class="cross">
+      <li>Custom-made products</li>
+      <li>Personalized items</li>
+      <li>Clearance sale items</li>
+      <li>Gift cards</li>
+    </ul>
+    <p>Please get in touch if you have questions or concerns about your specific item.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">12</span> Exchanges</h2>
+    <p>The fastest way to ensure you get what you want is to return the item you have, and once the return is accepted, make a separate purchase for the new item.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">13</span> Return Shipping Fee</h2>
+    <ul>
+      <li>We cover return shipping costs if items are defective, damaged, or shipped incorrectly due to our fault.</li>
+      <li>Customers are responsible for return shipping fees for voluntary, non-quality-related returns.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">14</span> Refunds</h2>
+    <p>We will notify you once we've received and inspected your return, and let you know if the refund was approved. If approved, you'll be automatically refunded on your original payment method within <strong>10 business days</strong>.</p>
+    <p>Please remember it can take some time for your bank or credit card company to process and post the refund. If more than <strong>15 business days</strong> have passed since we approved your return, please contact us at <a href="mailto:james@gondolalights.com">james@gondolalights.com</a>.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">15</span> Contact Information</h2>
+    <p>If you have any questions about this Shipping &amp; Returns Policy, please contact us:</p>
+    <div class="contact-line">
+      <div style="margin-bottom:6px;"><strong>Email:</strong> <a href="mailto:james@gondolalights.com">james@gondolalights.com</a></div>
+      <div style="margin-bottom:6px;"><strong>Phone:</strong> +1 949-685-3792</div>
+      <div style="margin-bottom:6px;"><strong>Official Business Address:</strong> 2441 N TUSTIN AVE UNIT# H, Santa Ana, California 92705-1661</div>
+      <div><strong>Business Hours:</strong> 9AM – 5PM, business workdays</div>
+    </div>
+    <p style="margin-top:16px;font-size:13px;color:#94a3b8;">This Shipping &amp; Returns Policy is issued by Capitec Inc., operating as TITATEC Lighting.</p>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="https://gondolalights.com" class="brand" aria-label="TITATEC home">
+          <span class="brand-name" style="color:#D7A63A;font-size:32px;font-weight:bold;letter-spacing:1px;display:block;">TITATEC<span class="dot">.</span></span>
+          <span class="brand-sub" style="color:#7C8BA0;font-size:16px;letter-spacing:0.5px;">Gondola LED Lighting</span>
+        </a>
+        <p>TITATEC designs and supplies under-shelf LED lighting, backlit display systems, and digital display integration for retail gondola shelving — for supermarkets, convenience stores and specialty retailers.</p>
+        <div class="socials">
+          <a href="https://www.facebook.com/TITATEClights" aria-label="TITATEC on Facebook" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7h2.4l.36-2.8H13.5V9.4c0-.81.22-1.36 1.38-1.36h1.48V5.55c-.26-.03-1.13-.11-2.15-.11-2.13 0-3.59 1.3-3.59 3.69v2.07H8.2V14h2.42v7h2.88z"/></svg></a>
+          <a href="https://www.instagram.com/gondolalights/" aria-label="TITATEC on Instagram" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.youtube.com/@GondolaLights" aria-label="TITATEC on YouTube" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.6 2.6 0 00-1.83-1.84C18.18 5 12 5 12 5s-6.18 0-7.77.36A2.6 2.6 0 002.4 7.2 27 27 0 002 12a27 27 0 00.4 4.8 2.6 2.6 0 001.83 1.84C5.82 19 12 19 12 19s6.18 0 7.77-.36a2.6 2.6 0 001.83-1.84A27 27 0 0022 12a27 27 0 00-.4-4.8zM10 15.2V8.8l5.2 3.2L10 15.2z"/></svg></a>
+          <a href="https://www.tiktok.com/@gondola_lights?_r=1&_t=ZT-95kLuw42Vo5" aria-label="TITATEC on TikTok" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.4 2.2 1.7 3.6 3.9 3.8v2.8c-1.4 0-2.7-.4-3.9-1.2v5.7c0 3.6-2.4 6.1-5.9 6.1A5.7 5.7 0 014.9 14.5c0-3.4 2.6-6 6-5.9v2.9a3 3 0 00-3 3 3 3 0 003 3c1.6 0 2.7-1.2 2.7-3V3h2z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>PRODUCTS</h4>
+        <a href="https://gondolalights.com/#p1">Under-Shelf LED Kits</a>
+        <a href="https://gondolalights.com/#p2">Backlit Display Panels</a>
+        <a href="https://gondolalights.com/#p3">LED + Digital Display</a>
+        <a href="https://gondolalights.com/#p4">Custom &amp; OEM Programs</a>
+        <a href="https://gondolalights.com/#new-arrival">New Arrival</a>
+      </div>
+      <div class="footer-col">
+        <h4>APPLICATIONS</h4>
+        <a href="https://gondolalights.com/#app1">Supermarkets &amp; Grocery</a>
+        <a href="https://gondolalights.com/#app2">Convenience &amp; C-Store</a>
+        <a href="https://gondolalights.com/#app3">Pharmacy &amp; Health</a>
+        <a href="https://gondolalights.com/#app4">Auto Parts &amp; Hardware</a>
+        <a href="https://gondolalights.com/#app5">Cosmetics &amp; Beauty</a>
+      </div>
+      <div class="footer-col">
+        <h4>COMPANY</h4>
+        <a href="https://gondolalights.com/#about">About TITATEC</a>
+        <a href="https://gondolalights.com/#about">Capabilities</a>
+        <a href="https://gondolalights.com/#contact">Contact &amp; Inquiries</a>
+        <a href="https://gondolalights.com/#contact">Wholesale &amp; OEM</a>
+      </div>
+      <div class="footer-col">
+        <h4>LEGAL</h4>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="shipping-and-return.html">Shipping &amp; Return</a>
+        <a href="warranty.html">Warranty Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 TITATEC. Operated by Capitec Inc.</span>
+      <span class="legal-note">TITATEC&reg; is a registered trademark of Forthsemi Co., Ltd., used under license.</span>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
