@@ -759,7 +759,7 @@ body.menu-open{overflow:hidden}
       <a href="#about" data-nav="about">About Us</a>
       <a href="#contact" data-nav="contact">Contact</a>
     </nav>
-    <a href="#contact" class="btn btn-line nav-cta">Get a Quote</a>
+    <a href="/quote/" class="btn-hero-quote nav-cta">Get a Quote</a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
@@ -797,9 +797,10 @@ body.menu-open{overflow:hidden}
   
   <!-- CTA 按钮 -->
   <div class="hero-ctas">
-    <a href="#products" class="btn btn-ghost">Explore Products <span class="arr" aria-hidden="true">&rarr;</span></a>
-    <a href="#new-arrival" class="btn btn-ghost">New Arrival</a>
-  </div>
+  <a href="#products" class="btn btn-ghost">Explore Products <span class="arr" aria-hidden="true">&rarr;</span></a>
+  <a href="/quote/" class="btn btn-hero-quote">Get a Quote</a>
+</div>
+<p class="hero-cta-hint">Get an instant quote for your store — no signup required.</p>
 </div>
     </div><!-- ===== 视频区块（自动播放） ===== -->
 <div class="section intro" style="padding-bottom: 0;">
@@ -1071,6 +1072,45 @@ body.menu-open{overflow:hidden}
       background:#FFE2C0 !important;
       color:#9C6520 !important;
     }
+    .btn-hero-quote {
+  background: #D7A63A;
+  color: #0A1628;
+  padding: 14px 28px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  border: 1.5px solid #D7A63A;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+.btn-hero-quote:hover {
+  background: #b8902e;
+  border-color: #b8902e;
+  transform: translateY(-2px);
+}
+.hero-cta-hint {
+  margin-top: 14px;
+  font-size: 12px;
+  color: #cbd5e1;
+  letter-spacing: 0.3px;
+}
+/* 导航栏的 Get a Quote 按钮：亮黄色 */
+.nav-cta.btn-hero-quote {
+  background: #FFD700;
+  color: #0A1628;
+  border-color: #FFD700;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.nav-cta.btn-hero-quote:hover {
+  background: #FFD700;
+  border-color: #FFD700;
+  transform: translateY(-1px);
+}
   </style>
   <table style="box-sizing:border-box;width:100%;max-width:100%;border-collapse:collapse;background:#f7f8fa;color:#222;font-size:12px;line-height:1.2;">
     <thead>
@@ -2162,22 +2202,31 @@ font-weight:700 !important;
             <div class="ci-item"><div class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div><div><b>Serving</b><p>North America &mdash; stock in California, fast shipping nationwide</p></div></div>
             <div class="ci-item"><div class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 005.4-5.4L15 12l-3-3 2.7-2.7z"/></svg></div><div><b>Wholesale &amp; OEM</b><p>Custom lengths, white label and bulk pricing &mdash; send your drawings or floor plan.</p></div></div>
           </div>
-          <form class="q-form reveal" id="quoteForm" novalidate>
-            <h2>Send an inquiry</h2>
-            <div class="form-grid">
-              <div class="field"><label for="f-name">Name</label><input type="text" id="f-name" name="name" placeholder="Your name" required></div>
-              <div class="field"><label for="f-company">Company / Store</label><input type="text" id="f-company" name="company" placeholder="Store or company name"></div>
-              <div class="field"><label for="f-email">Work email</label><input type="email" id="f-email" name="email" placeholder="you@company.com" required></div>
-              <div class="field"><label for="f-phone">Phone <span style="color:#A6B1C0">(optional)</span></label><input type="tel" id="f-phone" name="phone" placeholder="(555) 000-0000"></div>
-              <div class="field"><label for="f-topic">Topic</label>
-                <select id="f-topic" name="topic"><option value="">Select a topic</option><option>Under-shelf LED lighting</option><option>Backlit display panels</option><option>LED + digital display</option><option>Custom / OEM program</option><option>Wholesale pricing</option><option>Other</option></select>
-              </div>
-              <div class="field"><label for="f-qty">Est. gondola run / quantity</label><input type="text" id="f-qty" name="quantity" placeholder="e.g. 40 gondola runs"></div>
-              <div class="field full"><label for="f-msg">Message</label><textarea id="f-msg" name="message" placeholder="Tell us about your fixtures, planogram or custom needs..."></textarea></div>
-            </div>
-            <button type="submit" class="btn btn-primary">Send Inquiry <span class="arr" aria-hidden="true">&rarr;</span></button>
-            <p class="q-note" id="formNote">Your inquiry opens in your email app &mdash; we reply within one business day.</p>
-          </form>
+         <form class="q-form reveal" id="inquiryForm" novalidate>
+  <h2>Send an inquiry</h2>
+  <div class="form-grid">
+    <div class="field"><label for="f-name">Name</label><input type="text" id="f-name" name="name" placeholder="Your name" required></div>
+    <div class="field"><label for="f-company">Company / Store</label><input type="text" id="f-company" name="company" placeholder="Store or company name"></div>
+    <div class="field"><label for="f-email">Work email</label><input type="email" id="f-email" name="email" placeholder="you@company.com" required></div>
+    <div class="field"><label for="f-phone">Phone <span style="color:#A6B1C0">(optional)</span></label><input type="tel" id="f-phone" name="phone" placeholder="(555) 000-0000"></div>
+    <div class="field"><label for="f-topic">Topic</label>
+      <select id="f-topic" name="topic">
+        <option value="">Select a topic</option>
+        <option value="Under-shelf LED lighting">Under-shelf LED lighting</option>
+        <option value="Backlit display panels">Backlit display panels</option>
+        <option value="LED + digital display">LED + digital display</option>
+        <option value="Custom / OEM program">Custom / OEM program</option>
+        <option value="Wholesale pricing">Wholesale pricing</option>
+        <option value="After-sales support">After-sales support</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="field"><label for="f-qty">Est. gondola run / quantity</label><input type="text" id="f-qty" name="quantity" placeholder="e.g. 40 gondola runs"></div>
+    <div class="field full"><label for="f-msg">Message</label><textarea id="f-msg" name="message" placeholder="Tell us about your fixtures, planogram or custom needs..."></textarea></div>
+  </div>
+  <button type="submit" class="btn btn-primary" id="inquirySubmitBtn">Send Inquiry <span class="arr" aria-hidden="true">&rarr;</span></button>
+  <p class="q-note" id="formNote">We reply within one business day.</p>
+</form>
         </div>
       </div>
     </div>
@@ -2240,11 +2289,11 @@ font-weight:700 !important;
         <a href="#contact">Wholesale &amp; OEM</a>
       </div>
       <div class="footer-col">
-        <h4 style="font-size:14px;letter-spacing:0.12em;">LEGAL</h4>
-        <a href="https://www.gondolalights.com/privacy-policy" rel="noopener">Privacy Policy</a>
-      <a href="terms-of-service.html">Terms of Service</a>
-      <a href="shipping-and-return.html">Shipping &amp; Return</a>
-
+       <h4 style="font-size:14px;letter-spacing:0.12em;">LEGAL</h4>
+       <a href="privacy-policy.html">Privacy Policy</a>
+       <a href="terms-of-service.html">Terms of Service</a>
+       <a href="shipping-and-return.html">Shipping &amp; Return</a>
+      <a href="warranty.html">Warranty Policy</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -2503,34 +2552,80 @@ function parseYouTubeId(u) {
     });
   });
   /* ===== Contact form -> mailto ===== */
-  var form = document.getElementById('quoteForm');
-  if(form){
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      function g(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; }
-      var name = g('f-name'), email = g('f-email'), company = g('f-company'),
-          phone = g('f-phone'), topic = g('f-topic'), qty = g('f-qty'), msg = g('f-msg');
-      var subject = encodeURIComponent('Inquiry - TITATEC Lighting' + (company ? ' - ' + company : ''));
-      var lines = [];
-      lines.push('Name: ' + name);
-      lines.push('Company / Store: ' + (company || '-'));
-      lines.push('Email: ' + email);
-      lines.push('Phone: ' + (phone || '-'));
-      lines.push('Topic: ' + (topic || '-'));
-      lines.push('Est. gondola run / quantity: ' + (qty || '-'));
-      lines.push('');
-      lines.push('Message:');
-      lines.push(msg || '-');
-      var body = encodeURIComponent(lines.join('\n'));
-      window.location.href = 'mailto:James@capitecinc.com?subject=' + subject + '&body=' + body;
-      var note = document.getElementById('formNote');
-      if(note){ note.textContent = 'Opening your email app... if it did not open, email us directly at James@capitecinc.com.'; }
-    });
-  }
+ /* ============================================================
+   Inquiry Form — EmailJS 提交
+   ============================================================ */
+(function() {
+  var form = document.getElementById('inquiryForm');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    function g(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+    var data = {
+      name:       g('f-name'),
+      company:    g('f-company'),
+      from_email: g('f-email'),
+      phone:      g('f-phone'),
+      topic:      g('f-topic'),
+      quantity:   g('f-qty'),
+      message:    g('f-msg'),
+      to_email:   'james@gondolalights.com',
+      submitted_at: new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
+    };
+
+    // 前端校验
+    if (!data.name || !data.from_email || !data.message) {
+      alert('Please fill in Name, Work email, and Message.');
+      return;
+    }
+
+    // 按钮状态
+    var btn = document.getElementById('inquirySubmitBtn');
+    var originalBtnHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Sending...';
+
+    var note = document.getElementById('formNote');
+    if (note) {
+      note.textContent = 'Sending your inquiry...';
+      note.style.color = '';
+    }
+
+    // EmailJS 发送（抄送已在模板里配置为 {{from_email}}）
+    emailjs.send('service_rcukfi6', 'template_z1u3p9f', data)
+      .then(function() {
+        // 成功 → 替换表单为成功提示
+        form.innerHTML =
+          '<div style="text-align:center;padding:48px 24px;">' +
+            '<div style="font-size:56px;line-height:1;margin-bottom:20px;">✅</div>' +
+            '<h2 style="font-size:24px;font-weight:700;color:#0f172a;margin-bottom:12px;">Thank you!</h2>' +
+            '<p style="font-size:15px;color:#64748b;line-height:1.7;max-width:460px;margin:0 auto;">' +
+              'We\'ve received your inquiry and sent a confirmation to <strong>' + data.from_email + '</strong>.<br>' +
+              'Our team will reply within one business day.' +
+            '</p>' +
+          '</div>';
+      })
+      .catch(function(err) {
+        // 失败
+        console.error('EmailJS error:', err);
+        btn.disabled = false;
+        btn.innerHTML = originalBtnHTML;
+        if (note) {
+          note.textContent = 'Something went wrong. Please email us directly at james@gondolalights.com';
+          note.style.color = '#dc2626';
+        }
+      });
+  });
+})();
   /* ===== Footer year ===== */
   var y = document.getElementById('year');
   if(y){ y.textContent = new Date().getFullYear(); }
 })();
 </script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init({ publicKey: 'Ip7-GouIAYLg15fDm' });</script>
 </body>
 </html>
