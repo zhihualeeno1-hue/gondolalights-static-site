@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titatec Lighting - Quote Estimator</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif; background: #f4f7fc; min-height: 100vh; color: #1e293b; }
+.app-container { max-width: 1000px; width: calc(100% - 40px); margin: 30px auto; background: #ffffff; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,20,40,0.08); padding: 36px 40px 44px; border: 1px solid #eef2f6; }
+.header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 28px; border-bottom: 2px solid #eef2f6; padding-bottom: 18px; }
+.header h1 { font-size: 24px; font-weight: 700; color: #0f172a; }
+.header h1 span { background: #2563eb; color: #fff; font-size: 14px; font-weight: 600; padding: 2px 14px; border-radius: 40px; margin-left: 8px; }
+.store-section { background: #f8fafc; border-radius: 16px; padding: 20px 24px; margin-bottom: 28px; border: 1px solid #e9edf2; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.store-section label { font-size: 15px; font-weight: 600; color: #0f172a; white-space: nowrap; }
+.store-section input { flex: 1; min-width: 200px; border: 1.5px solid #dce1e8; border-radius: 10px; padding: 10px 16px; font-size: 15px; font-weight: 500; color: #0f172a; outline: none; transition: 0.2s; }
+.store-section input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.10); }
+.store-section .btn-start { background: #2563eb; color: #fff; border: none; padding: 10px 28px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+.store-section .btn-start:hover { background: #1d4ed8; }
+.store-section .btn-start:disabled { background: #94a3b8; cursor: not-allowed; }
+#calculator { display: none; }
+#calculator.active { display: block; }
+.config-bar { background: #f8fafc; border-radius: 14px; padding: 14px 20px; margin-bottom: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 30px; border: 1px solid #e9edf2; }
+.config-bar .config-item { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #334155; }
+.config-bar .config-item input[type="number"] { border: 1.5px solid #dce1e8; border-radius: 8px; padding: 6px 10px; width: 90px; font-size: 14px; font-weight: 500; outline: none; }
+.config-bar .config-item input[type="number"]:focus { border-color: #2563eb; }
+.config-bar .config-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: #2563eb; cursor: pointer; }
+.global-tip { background: #fffbeb; border: 1px solid #fde68a; color: #b45309; font-size: 13px; padding: 10px 16px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.btn { border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; padding: 10px 24px; }
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-primary:hover { background: #1d4ed8; }
+.btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
+.btn-secondary { background: #e2e8f0; color: #1e293b; }
+.btn-secondary:hover { background: #cbd5e1; }
+.btn-danger { background: transparent; color: #94a3b8; padding: 4px 8px; font-size: 16px; }
+.btn-danger:hover { color: #dc2626; background: #fef2f2; }
+.btn-sm { padding: 6px 16px; font-size: 13px; }
+.row-card { background: #fafcfd; border: 1.5px solid #e9edf2; border-radius: 16px; padding: 20px 22px; margin-bottom: 18px; }
+.row-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+.row-header .row-title { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; color: #0f172a; }
+.row-header .row-title .row-badge { background: #2563eb; color: #fff; font-size: 12px; font-weight: 600; padding: 0 10px; border-radius: 30px; line-height: 22px; }
+.row-header .row-title input { border: 1.5px solid #dce1e8; border-radius: 8px; padding: 6px 12px; font-size: 15px; font-weight: 600; color: #0f172a; outline: none; min-width: 160px; background: #fff; }
+.row-header .row-title .name-it-hint { font-size: 12px; color: #2563eb; font-weight: 500; margin-left: 4px; }
+.row-header .row-actions { display: flex; gap: 8px; }
+.shelf-item { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 16px; background: #fff; border-radius: 12px; border: 1px solid #eef2f6; margin-bottom: 8px; }
+.shelf-item .shelf-name { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #0f172a; }
+.shelf-item .shelf-name input { border: 1.5px solid #dce1e8; border-radius: 6px; padding: 4px 10px; font-size: 14px; font-weight: 500; color: #0f172a; outline: none; width: 130px; }
+.shelf-item .shelf-field { display: flex; align-items: center; gap: 4px; font-size: 13px; color: #475569; }
+.shelf-item .shelf-field select { border: 1.5px solid #dce1e8; border-radius: 6px; padding: 4px 6px; font-size: 13px; font-weight: 500; outline: none; background: #fff; cursor: pointer; }
+.shelf-item .shelf-field input[type="number"] { border: 1.5px solid #dce1e8; border-radius: 6px; padding: 4px 8px; width: 70px; font-size: 14px; font-weight: 500; outline: none; text-align: center; }
+.row-subtotal { display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding-top: 10px; margin-top: 4px; border-top: 1px dashed #e2e8f0; font-size: 14px; font-weight: 600; color: #0f172a; }
+.row-subtotal .subtotal-value { color: #2563eb; font-size: 16px; }
+.grand-total { background: #f1f5f9; border-radius: 16px; padding: 20px 24px; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border: 1px solid #e2e8f0; }
+.grand-total .gt-label { font-size: 15px; font-weight: 600; color: #475569; }
+.grand-total .gt-label { font-size: 20px; font-weight: 700; color: #dc2626; letter-spacing: 0.5px; }
+.grand-total .gt-value { font-size: 40px; font-weight: 800; color: #dc2626; }
+.grand-total .gt-value .currency { font-size: 20px; font-weight: 600; margin-right: 2px; }
+.submit-section { margin-top: 24px; text-align: right; }
+.submit-section .submit-note { margin-top: 10px; font-size: 13px; color: #64748b; }
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+.modal-overlay.active { display: flex; }
+.modal-box { background: #fff; border-radius: 20px; padding: 32px 36px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.15); position: relative; }
+.modal-box h2 { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+.modal-box p { font-size: 14px; color: #64748b; margin-bottom: 20px; }
+.modal-box .form-group { margin-bottom: 18px; }
+.modal-box .form-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+.modal-box .form-group input { width: 100%; border: 1.5px solid #dce1e8; border-radius: 10px; padding: 10px 14px; font-size: 15px; outline: none; }
+.modal-box .quote-preview { background: #f8fafc; border-radius: 12px; padding: 16px 18px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6; color: #1e293b; white-space: pre-wrap; max-height: 260px; overflow-y: auto; border: 1px solid #e9edf2; margin-bottom: 20px; }
+.modal-box .modal-actions { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
+.modal-box .modal-hint { font-size: 12px; color: #94a3b8; margin-top: 10px; line-height: 1.5; }
+@media (max-width: 700px) {
+.app-container { padding: 20px 16px 28px; }
+.header h1 { font-size: 20px; }
+.store-section { padding: 16px; flex-direction: column; align-items: stretch; }
+.store-section input, .store-section .btn-start { width: 100%; }
+.row-header { flex-direction: column; align-items: stretch; }
+.shelf-item { flex-direction: column; align-items: stretch; }
+.grand-total { flex-direction: column; text-align: center; }
+.submit-section { text-align: center; }
+.modal-box { padding: 24px 20px; }
+}
+/* ============ 页脚（和主页一致） ============ */
+:root {
+  --accent: #D7A63A;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+.site-footer{background:#E8E8E8 !important;color:#2D3748;padding:70px 0 30px;margin-top:60px}
+.site-footer .container{max-width:1280px;margin:0 auto;padding:0 32px}
+.site-footer .footer-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr 1.1fr;gap:36px;margin-bottom:46px}
+.site-footer .footer-brand .brand{display:block;margin-bottom:16px;text-decoration:none}
+.site-footer .footer-brand p{font-size:.88rem;max-width:320px;color:#2D3748;line-height:1.6}
+.site-footer .socials{display:flex;gap:22px;margin-top:20px}
+.site-footer .socials a{width:52px;height:52px;border-radius:8px;border:1px solid rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;color:#2D3748;text-decoration:none;transition:all .2s ease}
+.site-footer .socials a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+.site-footer .socials svg{width:26px;height:26px}
+.site-footer .footer-col h4{font-family:var(--font-mono);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#1A202C;margin-bottom:16px}
+.site-footer .footer-col a{display:block;font-size:.88rem;padding:4px 0;color:#2D3748;text-decoration:none;transition:color .2s ease}
+.site-footer .footer-col a:hover{color:var(--accent)}
+.site-footer .footer-bottom{border-top:1px solid rgba(0,0,0,.12);padding-top:24px;display:flex;flex-direction:column;gap:8px;font-size:.76rem;color:#4A5568}
+.site-footer .footer-bottom .legal-note{color:#2D3748}
+@media (max-width:980px){
+  .site-footer .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .site-footer .footer-grid{grid-template-columns:1fr}
+  .site-footer .container{padding:0 20px}
+}
+</style>
+</head>
+<body>
+<div class="app-container" id="app">
+<header class="header">
+<h1>Titatec Lighting <span>Quote Estimator</span></h1>
+<div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+  <div style="font-size:18px;color:#64748b;font-weight:500;letter-spacing:0.5px;">Professional LED Lighting for Retail Shelving</div>
+  <a href="https://gondolalights.com" style="font-size:14px;color:#2563eb;text-decoration:none;font-weight:600;white-space:nowrap;">← Back to Home</a>
+</div>
+</header>
+<div class="store-section" id="storeSection">
+<label for="storeName">Store Name:</label>
+<input type="text" id="storeName" placeholder="e.g. Grocery Mart, Downtown" />
+<button class="btn btn-primary btn-start" id="btnStart" disabled>Start Estimating</button>
+<button class="btn btn-secondary btn-start" id="btnReset" style="background:#e2e8f0;color:#1e293b;display:none;">Clear Saved</button>
+</div>
+<div id="calculator">
+<div class="config-bar">
+<div class="config-item"><label><input type="checkbox" id="needInstall" /> Installation Service</label></div>
+<div class="config-item"><span>Fee:</span><input type="number" id="installFee" value="200" min="0" step="50" /></div>
+</div>
+<div class="global-tip">
+<span>💡</span>
+<span>Tip: The top shelf level usually doesn't need lights. If your shelf has 5 levels, enter 4 here for the actual light bar calculation.</span>
+</div>
+<div id="rowsContainer"></div>
+<div style="margin-top:16px;"><button class="btn btn-secondary" id="btnAddRow">+ Add Row</button></div>
+<div class="grand-total">
+  <div class="gt-label">Grand Total</div>
+  <div class="gt-value"><span class="currency">$</span><span id="grandTotal">0.00</span></div>
+</div>
+<div style="margin-top:10px;font-size:15px;color:#64748b;line-height:1.6;text-align:center;">
+  ✅ All necessary tracks, LED drivers, and connection cables are automatically included in this quote — no additional parts need to be purchased for installation.
+</div>
+<div style="margin-top:10px;font-size:16px;color:#2563eb;font-weight:700;line-height:1.6;text-align:center;">
+  📐 Once your order is placed, we will provide a detailed electrical wiring diagram to guide you through the installation.
+</div>
+<div class="submit-section">
+<button class="btn btn-primary" id="btnSubmit" style="padding:14px 40px;font-size:16px;">Submit Quote Request</button>
+<div class="submit-note">📧 The quote will be sent to your email for your reference.</div>
+<div style="margin-top:14px;padding-top:14px;border-top:1px solid #e9edf2;font-size:13px;color:#475569;text-align:center;">
+  <span style="color:#2563eb;font-weight:700;">🛡️ 3-Year Limited Warranty</span>
+  <span style="color:#cbd5e1;padding:0 8px;">|</span>
+  <span style="color:#2563eb;font-weight:700;">🔧 Modular Components</span>
+  <span style="color:#cbd5e1;padding:0 8px;">|</span>
+  <span style="color:#2563eb;font-weight:700;">📞 Dedicated Support</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal-box">
+<h2>Submit Quote Request</h2>
+<p>Enter your email address below. The quote will be sent from <strong>james@gondolalights.com</strong> to your inbox.</p>
+<div class="form-group">
+<label for="customerEmail">Your Email Address *</label>
+<input type="email" id="customerEmail" placeholder="you@company.com" required />
+</div>
+<div class="form-group" style="position:absolute;left:-9999px;top:-9999px;margin:0;" aria-hidden="true">
+<label for="hp_website">Website</label>
+<input type="text" id="hp_website" name="website" tabindex="-1" autocomplete="off" />
+</div>
+<div class="form-group">
+<label>Quote Preview</label>
+<div class="quote-preview" id="quotePreview"></div>
+</div>
+<div class="modal-actions">
+<button class="btn btn-secondary" id="btnCancelModal">Cancel</button>
+<button class="btn btn-secondary" id="btnCopyQuote">📋 Copy Quote</button>
+<button class="btn btn-primary" id="btnSendEmail">Send Quote</button>
+</div>
+<div class="modal-hint">If the email doesn't arrive within a few minutes, please check your spam folder, or use "Copy Quote" to send it manually.</div>
+</div>
+</div>
+<!-- EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+/* ============================================================
+   EmailJS 配置
+   ============================================================ */
+var EMAILJS_PUBLIC_KEY  = 'Ip7-GouIAYLg15fDm';
+var EMAILJS_SERVICE_ID  = 'service_rcukfi6';
+var EMAILJS_TEMPLATE_ID = 'template_ukfodbt';
+
+emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+/* ============================================================
+   业务常量
+   ============================================================ */
+var UNIT_PRICE = 1.5;
+var MY_EMAIL = 'james@gondolalights.com';
+var STORAGE_KEY = 'titatec_quote_draft_v1';
+var SEND_THROTTLE_MS = 60000;
+
+/* ============================================================
+   状态
+   ============================================================ */
+var storeName = '';
+var rows = [];
+var nextRowId = 1;
+var nextShelfId = 1;
+var currentQuoteNo = '';
+
+var storeNameInput      = document.getElementById('storeName');
+var btnStart            = document.getElementById('btnStart');
+var btnReset            = document.getElementById('btnReset');
+var calculator          = document.getElementById('calculator');
+var rowsContainer       = document.getElementById('rowsContainer');
+var grandTotalEl        = document.getElementById('grandTotal');
+var needInstallCheckbox = document.getElementById('needInstall');
+var installFeeInput     = document.getElementById('installFee');
+var btnAddRow           = document.getElementById('btnAddRow');
+var btnSubmit           = document.getElementById('btnSubmit');
+var modalOverlay        = document.getElementById('modalOverlay');
+var quotePreview        = document.getElementById('quotePreview');
+var customerEmailInput  = document.getElementById('customerEmail');
+var btnCancelModal      = document.getElementById('btnCancelModal');
+var btnSendEmail        = document.getElementById('btnSendEmail');
+var btnCopyQuote        = document.getElementById('btnCopyQuote');
+var hpWebsiteInput      = document.getElementById('hp_website');
+
+/* ============================================================
+   工具
+   ============================================================ */
+function esc(s) {
+    return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function genQuoteNo() {
+    var d = new Date();
+    var ymd = d.getFullYear().toString() +
+              String(d.getMonth() + 1).padStart(2, '0') +
+              String(d.getDate()).padStart(2, '0');
+    var rand = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return 'TIT-' + ymd + '-' + rand;
+}
+
+/* ============================================================
+   localStorage 草稿
+   ============================================================ */
+function saveDraft() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            storeName: storeName, rows: rows,
+            nextRowId: nextRowId, nextShelfId: nextShelfId,
+            needInstall: needInstallCheckbox.checked,
+            installFee: installFeeInput.value
+        }));
+    } catch (e) {}
+}
+function loadDraft() {
+    try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+}
+function clearDraft() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+}
+
+/* ============================================================
+   初始化
+   ============================================================ */
+var draft = loadDraft();
+if (draft && draft.storeName && draft.rows && draft.rows.length > 0) {
+    storeName = draft.storeName;
+    rows = draft.rows;
+    nextRowId = draft.nextRowId || (rows.length + 1);
+    nextShelfId = draft.nextShelfId || 1;
+    storeNameInput.value = storeName;
+    btnStart.disabled = false;
+    needInstallCheckbox.checked = !!draft.needInstall;
+    if (draft.installFee != null) installFeeInput.value = draft.installFee;
+    btnReset.style.display = 'inline-flex';
+} else {
+    btnStart.disabled = true;
+}
+
+/* ============================================================
+   事件：店铺名 / 开始 / 清空
+   ============================================================ */
+storeNameInput.addEventListener('input', function() {
+    btnStart.disabled = this.value.trim().length === 0;
+});
+storeNameInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !btnStart.disabled) btnStart.click();
+});
+
+btnStart.addEventListener('click', function() {
+    storeName = storeNameInput.value.trim();
+    if (!storeName) return;
+    document.getElementById('storeSection').style.display = 'none';
+    calculator.classList.add('active');
+    if (rows.length === 0) addRow();
+    renderAll();
+    saveDraft();
+    btnReset.style.display = 'inline-flex';
+});
+
+btnReset.addEventListener('click', function() {
+    if (!confirm('Clear the saved draft and start over?')) return;
+    clearDraft();
+    location.reload();
+});
+
+/* ============================================================
+   行 / 货架操作
+   ============================================================ */
+function addRow() {
+    var rowId = nextRowId++;
+    rows.push({ id: rowId, name: 'Row ' + rowId, shelves: [] });
+    addShelfToRow(rowId);
+}
+function addShelfToRow(rowId) {
+    var row = findRow(rowId);
+    if (!row) return;
+    var shelfId = nextShelfId++;
+    row.shelves.push({ id: shelfId, name: 'Gondola No' + shelfId, length: 36, levels: 3 });
+    renderAll();
+    saveDraft();
+}
+function findRow(rowId) {
+    for (var i = 0; i < rows.length; i++) if (rows[i].id === rowId) return rows[i];
+    return null;
+}
+function findShelf(row, shelfId) {
+    for (var i = 0; i < row.shelves.length; i++) if (row.shelves[i].id === shelfId) return row.shelves[i];
+    return null;
+}
+function deleteRow(rowId) {
+    if (!confirm('Delete this row and all its shelves?')) return;
+    var nr = [];
+    for (var i = 0; i < rows.length; i++) if (rows[i].id !== rowId) nr.push(rows[i]);
+    rows = nr; renderAll(); saveDraft();
+}
+function deleteShelf(rowId, shelfId) {
+    var row = findRow(rowId);
+    if (!row) return;
+    if (row.shelves.length <= 1) { alert('Each row must have at least one shelf.'); return; }
+    var ns = [];
+    for (var i = 0; i < row.shelves.length; i++) if (row.shelves[i].id !== shelfId) ns.push(row.shelves[i]);
+    row.shelves = ns; renderAll(); saveDraft();
+}
+
+/* ============================================================
+   计算：lightLength = length * levels
+   ============================================================ */
+function calcShelf(shelf) {
+    var lightLength = shelf.length * shelf.levels;
+    var subtotal = lightLength * UNIT_PRICE;
+    return { lightLength: lightLength, subtotal: subtotal };
+}
+function calcRowSubtotal(row) {
+    var s = 0;
+    for (var i = 0; i < row.shelves.length; i++) s += calcShelf(row.shelves[i]).subtotal;
+    return s;
+}
+function calcGrandTotal() {
+    var t = 0;
+    for (var i = 0; i < rows.length; i++) t += calcRowSubtotal(rows[i]);
+    if (needInstallCheckbox.checked) t += parseFloat(installFeeInput.value) || 0;
+    return t;
+}
+
+/* ============================================================
+   渲染
+   ============================================================ */
+function renderAll() { renderRows(); renderGrandTotal(); }
+
+function refreshTotalsOnly() {
+    var cards = rowsContainer.querySelectorAll('[data-row-id]');
+    for (var i = 0; i < cards.length; i++) {
+        var rowId = parseInt(cards[i].getAttribute('data-row-id'));
+        var row = findRow(rowId);
+        if (!row) continue;
+        var el = cards[i].querySelector('.subtotal-value');
+        if (el) el.textContent = '$' + calcRowSubtotal(row).toFixed(2);
+    }
+    renderGrandTotal();
+    saveDraft();
+}
+
+function renderRows() {
+    if (rows.length === 0) {
+        rowsContainer.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;">No rows added. Click Add Row to start.</div>';
+        return;
+    }
+    var html = '';
+    for (var r = 0; r < rows.length; r++) {
+        var row = rows[r];
+        var rowSubtotal = calcRowSubtotal(row);
+        html += '<div class="row-card" data-row-id="' + row.id + '">';
+        html += '<div class="row-header"><div class="row-title">';
+        html += '<span class="row-badge">#' + (r + 1) + '</span>';
+        html += '<input type="text" value="' + esc(row.name) + '" data-row-name="' + row.id + '" placeholder="Row Name" />';
+        html += '<span class="name-it-hint">(Name it!)</span>';
+        html += '</div><div class="row-actions">';
+        html += '<button class="btn btn-secondary btn-sm" data-add-shelf="' + row.id + '">+ Add Shelf</button>';
+        html += '<button class="btn btn-danger" data-delete-row="' + row.id + '" title="Delete Row">X</button>';
+        html += '</div></div><div class="shelf-list">';
+
+        for (var s = 0; s < row.shelves.length; s++) {
+            var shelf = row.shelves[s];
+            var isCustom = [30, 36, 40, 48].indexOf(shelf.length) === -1;
+            html += '<div class="shelf-item" data-shelf-id="' + shelf.id + '">';
+            html += '<div class="shelf-name"><span style="color:#94a3b8;font-weight:400;">#' + (s + 1) + '</span>';
+            html += '<input type="text" value="' + esc(shelf.name) + '" data-shelf-name="' + shelf.id + '" data-row-id="' + row.id + '" placeholder="Shelf Name" /></div>';
+            html += '<div class="shelf-field"><span>Length:</span>';
+            html += '<select data-shelf-length-select="' + shelf.id + '" data-row-id="' + row.id + '">';
+            html += '<option value="30"' + (shelf.length === 30 ? ' selected' : '') + '>30"</option>';
+            html += '<option value="36"' + (shelf.length === 36 ? ' selected' : '') + '>36"</option>';
+            html += '<option value="40"' + (shelf.length === 40 ? ' selected' : '') + '>40"</option>';
+            html += '<option value="48"' + (shelf.length === 48 ? ' selected' : '') + '>48"</option>';
+            html += '<option value="other"' + (isCustom ? ' selected' : '') + '>Other</option></select>';
+            html += '<input type="number" value="' + shelf.length + '" data-shelf-length-custom="' + shelf.id + '" data-row-id="' + row.id + '" min="1" step="0.5" style="width:70px; display:' + (isCustom ? 'inline-block' : 'none') + ';" placeholder="inch" />';
+            html += '<span>inch</span></div>';
+            html += '<div class="shelf-field"><span>Levels:</span>';
+            html += '<select data-shelf-levels="' + shelf.id + '" data-row-id="' + row.id + '">';
+            for (var lv = 1; lv <= 10; lv++) {
+                html += '<option value="' + lv + '"' + (shelf.levels === lv ? ' selected' : '') + '>' + lv + '</option>';
+            }
+            html += '</select></div>';
+            html += '<button class="btn btn-danger" data-delete-shelf="' + shelf.id + '" data-row-id="' + row.id + '" title="Delete Shelf">X</button>';
+            html += '</div>';
+        }
+        html += '</div><div class="row-subtotal"><span>Row Subtotal:</span>';
+        html += '<span class="subtotal-value">$' + rowSubtotal.toFixed(2) + '</span></div></div>';
+    }
+    rowsContainer.innerHTML = html;
+    bindEvents();
+}
+
+function bindEvents() {
+    var els;
+    els = rowsContainer.querySelectorAll('[data-row-name]');
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener('change', function() {
+            var row = findRow(parseInt(this.getAttribute('data-row-name')));
+            if (row) row.name = this.value;
+            saveDraft();
+        });
+    }
+    els = rowsContainer.querySelectorAll('[data-add-shelf]');
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener('click', function() {
+            addShelfToRow(parseInt(this.getAttribute('data-add-shelf')));
+        });
+    }
+    els = rowsContainer.querySelectorAll('[data-delete-row]');
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener('click', function() {
+            deleteRow(parseInt(this.getAttribute('data-delete-row')));
+        });
+    }
+    els = rowsContainer.querySelectorAll('[data-shelf-name]');
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener('change', function() {
+            var row = findRow(parseInt(this.getAttribute('data-row-id')));
+            if (row) {
+                var shelf = findShelf(row, parseInt(this.getAttribute('data-shelf-name')));
+                if (shelf) shelf.name = this.value;
+            }
+            saveDraft();
+        });
+    }
+    els = rowsContainer.querySelectorAll('[data-shelf-length-select]');
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener('change', function() {
+            var row = findRow(parseInt(this.getAttribute('data-row-id')));
+            if (!row) return;
+            var shelf = findShelf(row, parseInt(this.getAttribute('data-shelf-length-select')));
+            if (!shelf) return;
+            if (this.value === 'other') {
+                this.nextElementSibling.style.display = 'inline-block';
+                this.nextElementSibling.focus();
+                this.nextElementSibling.select();
+            } else {
+                shelf.length = parseFloat(this.value);
+                this.nextElementSibling.style.display = 'none';
+                renderAll(); saveDraft();
+            }
+        });
+    }
+    els = rowsContainer.querySelectorAll('[data-shelf-length-custom]');
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener('input', function() {
+            var row = findRow(parseInt(this.getAttribute('data-row-id')));
+            if (row) {
+                var shelf = findShelf(row, parseInt(this.getAttribute('data-shelf-length-custom')));
+                if (shelf) shelf.length = parseFloat(this.value) || 0;
+            }
+            refreshTotalsOnly();
+        });
+    }
+    els = rowsContainer.querySelectorAll('[data-shelf-levels]');
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener('change', function() {
+            var row = findRow(parseInt(this.getAttribute('data-row-id')));
+            if (row) {
+                var shelf = findShelf(row, parseInt(this.getAttribute('data-shelf-levels')));
+                if (shelf) shelf.levels = parseInt(this.value) || 1;
+            }
+            renderAll(); saveDraft();
+        });
+    }
+    els = rowsContainer.querySelectorAll('[data-delete-shelf]');
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener('click', function() {
+            deleteShelf(parseInt(this.getAttribute('data-row-id')), parseInt(this.getAttribute('data-delete-shelf')));
+        });
+    }
+}
+
+function renderGrandTotal() { grandTotalEl.textContent = calcGrandTotal().toFixed(2); }
+
+/* ============================================================
+   全局事件
+   ============================================================ */
+btnAddRow.addEventListener('click', addRow);
+needInstallCheckbox.addEventListener('change', function() { renderGrandTotal(); saveDraft(); });
+installFeeInput.addEventListener('input', function() { renderGrandTotal(); saveDraft(); });
+
+/* ============================================================
+   打开提交弹窗
+   ============================================================ */
+btnSubmit.addEventListener('click', function() {
+    if (rows.length === 0) { alert('Please add at least one row before submitting.'); return; }
+    currentQuoteNo = genQuoteNo();
+    quotePreview.textContent = generateQuoteText();
+    customerEmailInput.value = '';
+    if (hpWebsiteInput) hpWebsiteInput.value = '';
+    modalOverlay.classList.add('active');
+});
+btnCancelModal.addEventListener('click', function() { modalOverlay.classList.remove('active'); });
+modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) modalOverlay.classList.remove('active'); });
+
+/* ============================================================
+   发送邮件（EmailJS + honeypot + 60 秒节流）
+   ============================================================ */
+btnSendEmail.addEventListener('click', function() {
+    /* 防护 1：Honeypot —— 机器人会填隐藏字段，真人不会 */
+    var honeypot = hpWebsiteInput ? hpWebsiteInput.value : '';
+    if (honeypot) {
+        modalOverlay.classList.remove('active');
+        alert('Quote sent to ' + customerEmailInput.value.trim() + ' successfully.\nQuote No: ' + currentQuoteNo);
+        return;
+    }
+
+    var email = customerEmailInput.value.trim();
+    if (!email) { alert('Please enter your email address.'); customerEmailInput.focus(); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); customerEmailInput.focus(); return; }
+
+    /* 防护 2：60 秒发送节流 */
+    var lastSend = parseInt(localStorage.getItem('titatec_last_send') || '0', 10);
+    var now = Date.now();
+    if (now - lastSend < SEND_THROTTLE_MS) {
+        var wait = Math.ceil((SEND_THROTTLE_MS - (now - lastSend)) / 1000);
+        alert('Please wait ' + wait + ' seconds before sending another quote.');
+        return;
+    }
+
+    btnSendEmail.disabled = true;
+    btnSendEmail.textContent = 'Sending...';
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_email: email,
+        quote_no: currentQuoteNo,
+        store_name: storeName,
+        quote_html: generateQuoteHtml()
+    }).then(function() {
+        localStorage.setItem('titatec_last_send', Date.now().toString());
+        modalOverlay.classList.remove('active');
+        alert('Quote sent to ' + email + ' successfully.\nQuote No: ' + currentQuoteNo);
+    }).catch(function(err) {
+        console.error('EmailJS error:', err);
+        alert('Failed to send email. Please use "📋 Copy Quote" and send it manually.');
+    }).finally(function() {
+        btnSendEmail.disabled = false;
+        btnSendEmail.textContent = 'Send Quote';
+    });
+});
+
+/* ============================================================
+   Copy Quote 兜底
+   ============================================================ */
+btnCopyQuote.addEventListener('click', function() {
+    var text = generateQuoteText();
+    var done = function() {
+        btnCopyQuote.textContent = '✅ Copied!';
+        setTimeout(function() { btnCopyQuote.textContent = '📋 Copy Quote'; }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function() { fallbackCopy(text, done); });
+    } else {
+        fallbackCopy(text, done);
+    }
+});
+function fallbackCopy(text, cb) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    if (cb) cb();
+}
+
+/* ============================================================
+   报价文本生成（网页弹窗预览用）
+   ============================================================ */
+function generateQuoteText() {
+    var now = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    var line = '=======================================================';
+    var dash = '-------------------------------------------------------';
+
+    var text = '';
+    text += line + '\n';
+    text += '           TITATEC LIGHTING\n';
+    text += '           OFFICIAL QUOTE\n';
+    text += line + '\n\n';
+    text += '  Quote No:         ' + currentQuoteNo + '\n';
+    text += '  Date:             ' + now + '\n';
+    text += '  Store:            ' + storeName + '\n';
+    text += '  Prepared by:      Titatec Lighting Sales Team\n';
+    text += '  Email:            ' + MY_EMAIL + '\n';
+    text += '  Official website: https://gondolalights.com\n';
+    text += '  Online shop:      https://shop.gondolalights.com\n\n';
+    text += dash + '\n';
+    text += '  QUOTE DETAILS\n';
+    text += dash + '\n\n';
+
+    var grandTotal = 0, totalShelves = 0;
+
+    for (var r = 0; r < rows.length; r++) {
+        var row = rows[r];
+        var rowSubtotal = calcRowSubtotal(row);
+        grandTotal += rowSubtotal;
+        text += '  ' + row.name + '\n';
+        text += '  ' + dash.substring(0, row.name.length + 4) + '\n';
+
+        for (var s = 0; s < row.shelves.length; s++) {
+            var shelf = row.shelves[s];
+            var result = calcShelf(shelf);
+            totalShelves += shelf.levels;
+            text += '    ' + shelf.name + '\n';
+            text += '      Length:     ' + shelf.length + ' inch\n';
+            text += '      Levels:     ' + shelf.levels + '\n';
+            text += '      Subtotal:   $' + result.subtotal.toFixed(2) + '\n\n';
+        }
+        text += '  ' + row.name + ' Subtotal: $' + rowSubtotal.toFixed(2) + '\n\n';
+    }
+
+    var installChecked = needInstallCheckbox.checked;
+    var installFee = installChecked ? (parseFloat(installFeeInput.value) || 0) : 0;
+    if (installChecked) grandTotal += installFee;
+
+    text += dash + '\n';
+    text += '  SUMMARY\n';
+    text += dash + '\n\n';
+    text += '  Total Rows:            ' + rows.length + '\n';
+    text += '  Total Shelves:         ' + totalShelves + '\n\n';
+    if (installChecked) {
+        text += '  Installation Service:  $' + installFee.toFixed(2) + '\n';
+    } else {
+        text += '  Installation Service:  Not Included\n';
+    }
+      text += '\n' + line + '\n';
+    text += '  GRAND TOTAL:           $' + grandTotal.toFixed(2) + '\n';
+    text += line + '\n\n';
+    text += '  All necessary tracks, LED drivers, and connection cables are\n';
+    text += '  automatically included in this quote - no additional parts\n';
+    text += '  need to be purchased for installation.\n\n';
+    text += '  Once your order is placed, we will provide a detailed\n';
+    text += '  electrical wiring diagram to guide you through the installation.\n\n';
+    text += '  Thank you for your business!\n';
+    text += '  For questions, please contact ' + MY_EMAIL + '\n\n';
+    text += '  -------------------------------------------------------\n';
+    text += '  [ 3-Year Limited Warranty | Modular Components | Support ]\n';
+    text += '  -------------------------------------------------------\n\n';
+    text += '  Titatec Lighting | Professional LED lighting for retail shelving\n';
+    return text;
+}
+
+/* ============================================================
+   报价 HTML 版（用于邮件，表格形式）
+   ============================================================ */
+function generateQuoteHtml() {
+    var now = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    var thStyle = 'padding:10px 12px;text-align:left;background:#2563eb;color:#ffffff;font-size:13px;font-weight:600;border:1px solid #dbe3ee;';
+    var thRight = thStyle + 'text-align:right;';
+    var tdStyle = 'padding:10px 12px;font-size:13px;color:#1e293b;border:1px solid #e5ebf3;';
+    var tdRight = tdStyle + 'text-align:right;';
+    var tdMuted = tdStyle + 'color:#94a3b8;font-size:12px;';
+    var subtotalTd = 'padding:10px 12px;font-size:13px;font-weight:700;color:#0f172a;background:#f1f5f9;border:1px solid #e5ebf3;text-align:right;';
+    var subtotalLabel = 'padding:10px 12px;font-size:13px;font-weight:700;color:#0f172a;background:#f1f5f9;border:1px solid #e5ebf3;text-align:right;';
+
+    var grandTotal = 0, totalShelves = 0;
+    var detailRows = '';
+
+    for (var r = 0; r < rows.length; r++) {
+        var row = rows[r];
+        var rowSubtotal = calcRowSubtotal(row);
+        grandTotal += rowSubtotal;
+
+        for (var s = 0; s < row.shelves.length; s++) {
+            var shelf = row.shelves[s];
+            var result = calcShelf(shelf);
+            totalShelves += shelf.levels;
+
+            var rowLabel = (s === 0) ? esc(row.name) : '';
+            var rowLabelCell = rowLabel
+                ? '<td style="' + tdStyle + 'font-weight:600;color:#2563eb;vertical-align:top;">' + rowLabel + '</td>'
+                : '<td style="' + tdMuted + 'vertical-align:top;"></td>';
+
+            detailRows += '<tr>' +
+                rowLabelCell +
+                '<td style="' + tdStyle + '">' + esc(shelf.name) + '</td>' +
+                '<td style="' + tdRight + '">' + shelf.length + '&quot;</td>' +
+                '<td style="' + tdRight + '">' + shelf.levels + '</td>' +
+                '<td style="' + tdRight + '">$' + result.subtotal.toFixed(2) + '</td>' +
+            '</tr>';
+        }
+
+        detailRows += '<tr>' +
+            '<td colspan="4" style="' + subtotalLabel + '">' + esc(row.name) + ' Subtotal</td>' +
+            '<td style="' + subtotalTd + '">$' + rowSubtotal.toFixed(2) + '</td>' +
+        '</tr>';
+    }
+
+    var installChecked = needInstallCheckbox.checked;
+    var installFee = installChecked ? (parseFloat(installFeeInput.value) || 0) : 0;
+    if (installChecked) grandTotal += installFee;
+
+    var summaryRows =
+        '<tr><td style="' + tdStyle + '">Total Rows</td><td style="' + tdRight + '">' + rows.length + '</td></tr>' +
+        '<tr><td style="' + tdStyle + '">Total Shelves</td><td style="' + tdRight + '">' + totalShelves + '</td></tr>' +
+        '<tr><td style="' + tdStyle + '">Installation Service</td><td style="' + tdRight + '">' +
+            (installChecked ? '$' + installFee.toFixed(2) : 'Not Included') +
+        '</td></tr>';
+
+    var html = '';
+    html += '<div style="font-family:Arial,Helvetica,sans-serif;max-width:720px;margin:0 auto;color:#1e293b;">';
+
+       html += '<div style="background:#ffffff;padding:10px 32px;border-radius:12px 12px 0 0;border:1px solid #e5ebf3;border-bottom:none;">';
+    html += '<table style="width:100%;border-collapse:collapse;"><tr>';
+    html += '<td style="vertical-align:middle;">';
+    html += '<table style="border-collapse:collapse;"><tr>';
+    html += '<td style="vertical-align:middle;padding-right:14px;">';
+    html += '<img src="https://gondolalights.com/TITATEC-logo-400.png" alt="Titatec Lighting" style="height:72px;display:block;max-width:240px;" />';
+    html += '</td>';
+    html += '<td style="vertical-align:middle;border-left:1px solid #e5ebf3;padding-left:14px;">';
+    html += '<div style="font-size:16px;font-weight:700;color:#0f172a;letter-spacing:1.5px;line-height:1.2;">TITATEC LIGHTING</div>';
+    html += '<div style="font-size:11px;color:#64748b;letter-spacing:2px;margin-top:4px;">PROFESSIONAL LED LIGHTING</div>';
+    html += '</td>';
+    html += '</tr></table>';
+    html += '</td>';
+    html += '<td style="text-align:right;vertical-align:middle;color:#2563eb;font-size:13px;letter-spacing:3px;font-weight:700;">OFFICIAL QUOTE</td>';
+    html += '</tr></table>';
+    html += '</div>';
+
+    html += '<div style="padding:20px 28px;background:#f8fafc;border:1px solid #e5ebf3;border-top:none;">';
+    html += '<table style="width:100%;border-collapse:collapse;font-size:13px;">';
+    html += '<tr><td style="padding:3px 0;color:#64748b;width:130px;">Quote No:</td><td style="padding:3px 0;font-weight:600;color:#0f172a;">' + esc(currentQuoteNo) + '</td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Date:</td><td style="padding:3px 0;">' + now + '</td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Store:</td><td style="padding:3px 0;font-weight:600;color:#0f172a;">' + esc(storeName) + '</td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Prepared by:</td><td style="padding:3px 0;">Titatec Lighting Sales Team</td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Email:</td><td style="padding:3px 0;">' + MY_EMAIL + '</td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Official website:</td><td style="padding:3px 0;"><a href="https://gondolalights.com" style="color:#2563eb;text-decoration:none;">https://gondolalights.com</a></td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Online shop:</td><td style="padding:3px 0;"><a href="https://shop.gondolalights.com" style="color:#2563eb;text-decoration:none;">https://shop.gondolalights.com</a></td></tr>';
+    html += '</table>';
+    html += '</div>';
+
+    html += '<div style="padding:20px 28px;border:1px solid #e5ebf3;border-top:none;">';
+    html += '<div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:12px;">Quote Details</div>';
+    html += '<table style="width:100%;border-collapse:collapse;">';
+    html += '<thead><tr>';
+    html += '<th style="' + thStyle + '">Row</th>';
+    html += '<th style="' + thStyle + '">Shelf</th>';
+    html += '<th style="' + thRight + '">Length</th>';
+    html += '<th style="' + thRight + '">Levels</th>';
+    html += '<th style="' + thRight + '">Subtotal</th>';
+    html += '</tr></thead><tbody>';
+    html += detailRows;
+    html += '</tbody></table>';
+    html += '</div>';
+
+    html += '<div style="padding:20px 28px;border:1px solid #e5ebf3;border-top:none;background:#fafcfd;">';
+    html += '<div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:12px;">Summary</div>';
+    html += '<table style="width:100%;border-collapse:collapse;">';
+    html += summaryRows;
+    html += '</table>';
+    html += '</div>';
+
+    html += '<div style="padding:12px 28px;background:#2563eb;color:#ffffff;border-radius:0 0 12px 12px;">';
+    html += '<table style="width:100%;border-collapse:collapse;"><tr>';
+    html += '<td style="font-size:14px;font-weight:600;letter-spacing:0.5px;color:#ffffff;">GRAND TOTAL</td>';
+    html += '<td style="font-size:26px;font-weight:800;text-align:right;color:#ffffff;">$' + grandTotal.toFixed(2) + '</td>';
+    html += '</tr></table>';
+    html += '</div>';
+    html += '<div style="margin-top:10px;font-size:15px;color:#64748b;line-height:1.6;text-align:center;">';
+    html += '✅ All necessary tracks, LED drivers, and connection cables are automatically included in this quote — no additional parts need to be purchased for installation.';
+    html += '</div>';
+    html += '<div style="margin-top:10px;font-size:16px;color:#2563eb;font-weight:700;line-height:1.6;text-align:center;">';
+    html += '📐 Once your order is placed, we will provide a detailed electrical wiring diagram to guide you through the installation.';
+    html += '</div>';
+        // 页脚：感谢 + 联系方式
+    html += '<div style="padding:18px 28px 12px;text-align:center;font-size:12px;color:#94a3b8;">';
+    html += 'Thank you for your business!<br>';
+    html += 'For questions, please contact <a href="mailto:' + MY_EMAIL + '" style="color:#2563eb;text-decoration:none;">' + MY_EMAIL + '</a>';
+    html += '</div>';
+
+    // 品牌承诺区（质保 + 模块化 + 售后）
+    html += '<div style="padding:16px 28px;text-align:center;background:#f8fafc;border-top:1px solid #e5ebf3;">';
+    html += '<span style="color:#2563eb;font-weight:700;font-size:12px;">🛡️ 3-Year Limited Warranty</span>';
+    html += '<span style="color:#cbd5e1;padding:0 8px;">|</span>';
+    html += '<span style="color:#2563eb;font-weight:700;font-size:12px;">🔧 Modular Components</span>';
+    html += '<span style="color:#cbd5e1;padding:0 8px;">|</span>';
+    html += '<span style="color:#2563eb;font-weight:700;font-size:12px;">📞 Dedicated Support</span>';
+    html += '<br>';
+    html += '<span style="font-size:11px;color:#94a3b8;margin-top:6px;display:inline-block;">3-Year limited warranty on LED bars and drivers. Modular design for easy field replacement.</span>';
+    html += '</div>';
+
+    // 品牌标语
+    html += '<div style="padding:14px 28px;text-align:center;font-size:12px;color:#94a3b8;">';
+    html += 'Titatec Lighting | Professional LED lighting for retail shelving';
+    html += '</div>';
+
+    html += '</div>';
+    return html;
+}
+
+console.log('Titatec Lighting Quote Estimator ready.');
+</script>
+<!-- ===== Footer ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="https://gondolalights.com" class="brand" aria-label="TITATEC home">
+          <span class="brand-name" style="color:#D7A63A;font-size:32px;font-weight:bold;letter-spacing:1px;display:block;">TITATEC<span class="dot">.</span></span>
+          <span class="brand-sub" style="color:#7C8BA0;font-size:16px;letter-spacing:0.5px;">Gondola LED Lighting</span>
+        </a>
+        <p>TITATEC designs and supplies under-shelf LED lighting, backlit display systems, and digital display integration for retail gondola shelving — for supermarkets, convenience stores and specialty retailers.</p>
+        <div class="socials">
+          <a href="https://www.facebook.com/TITATEClights" aria-label="TITATEC on Facebook" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7h2.4l.36-2.8H13.5V9.4c0-.81.22-1.36 1.38-1.36h1.48V5.55c-.26-.03-1.13-.11-2.15-.11-2.13 0-3.59 1.3-3.59 3.69v2.07H8.2V14h2.42v7h2.88z"/></svg></a>
+          <a href="https://www.instagram.com/gondolalights/" aria-label="TITATEC on Instagram" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.youtube.com/@GondolaLights" aria-label="TITATEC on YouTube" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.6 2.6 0 00-1.83-1.84C18.18 5 12 5 12 5s-6.18 0-7.77.36A2.6 2.6 0 002.4 7.2 27 27 0 002 12a27 27 0 00.4 4.8 2.6 2.6 0 001.83 1.84C5.82 19 12 19 12 19s6.18 0 7.77-.36a2.6 2.6 0 001.83-1.84A27 27 0 0022 12a27 27 0 00-.4-4.8zM10 15.2V8.8l5.2 3.2L10 15.2z"/></svg></a>
+          <a href="https://www.tiktok.com/@gondola_lights?_r=1&_t=ZT-95kLuw42Vo5" aria-label="TITATEC on TikTok" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.4 2.2 1.7 3.6 3.9 3.8v2.8c-1.4 0-2.7-.4-3.9-1.2v5.7c0 3.6-2.4 6.1-5.9 6.1A5.7 5.7 0 014.9 14.5c0-3.4 2.6-6 6-5.9v2.9a3 3 0 00-3 3 3 3 0 003 3c1.6 0 2.7-1.2 2.7-3V3h2z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>PRODUCTS</h4>
+        <a href="https://gondolalights.com/#p1">Under-Shelf LED Kits</a>
+        <a href="https://gondolalights.com/#p2">Backlit Display Panels</a>
+        <a href="https://gondolalights.com/#p3">LED + Digital Display</a>
+        <a href="https://gondolalights.com/#p4">Custom &amp; OEM Programs</a>
+        <a href="https://gondolalights.com/#new-arrival">New Arrival</a>
+      </div>
+      <div class="footer-col">
+        <h4>APPLICATIONS</h4>
+        <a href="https://gondolalights.com/#app1">Supermarkets &amp; Grocery</a>
+        <a href="https://gondolalights.com/#app2">Convenience &amp; C-Store</a>
+        <a href="https://gondolalights.com/#app3">Pharmacy &amp; Health</a>
+        <a href="https://gondolalights.com/#app4">Auto Parts &amp; Hardware</a>
+        <a href="https://gondolalights.com/#app5">Cosmetics &amp; Beauty</a>
+      </div>
+      <div class="footer-col">
+        <h4>COMPANY</h4>
+        <a href="https://gondolalights.com/#about">About TITATEC</a>
+        <a href="https://gondolalights.com/#about">Capabilities</a>
+        <a href="https://gondolalights.com/#contact">Contact &amp; Inquiries</a>
+        <a href="https://gondolalights.com/#contact">Wholesale &amp; OEM</a>
+      </div>
+      <div class="footer-col">
+        <h4>LEGAL</h4>
+        <a href="/privacy-policy.html">Privacy Policy</a>
+        <a href="/terms-of-service.html">Terms of Service</a>
+        <a href="/shipping-and-return.html">Shipping &amp; Return</a>
+        <a href="/warranty.html">Warranty Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 TITATEC. Operated by Capitec Inc.</span>
+      <span class="legal-note">TITATEC&reg; is a registered trademark of Forthsemi Co., Ltd., used under license.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
