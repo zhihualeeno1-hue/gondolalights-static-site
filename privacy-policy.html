@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy - TITATEC Lighting</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', Roboto, system-ui, -apple-system, Arial, sans-serif;
+  background: #f4f7fc;
+  color: #1e293b;
+  line-height: 1.7;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ============ 品牌变量 ============ */
+:root {
+  --accent: #D7A63A;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+/* ============ 顶部导航 ============ */
+.top-bar {
+  background: #ffffff;
+  border-bottom: 1px solid #e5ebf3;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.top-bar .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #0f172a;
+}
+.top-bar .brand img { height: 40px; display: block; }
+.top-bar .brand-name { font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+.top-bar .brand-sub { font-size: 10px; color: #64748b; letter-spacing: 2px; margin-top: 2px; }
+.top-bar .back-link { font-size: 14px; color: #2563eb; text-decoration: none; font-weight: 600; }
+.top-bar .back-link:hover { text-decoration: underline; }
+
+/* ============ 主内容 ============ */
+.page-wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 60px; }
+.hero {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 40px 44px;
+  border: 1px solid #e5ebf3;
+  box-shadow: 0 4px 20px rgba(0,20,40,0.04);
+  margin-bottom: 32px;
+}
+.hero .kicker { font-size: 12px; color: #2563eb; font-weight: 700; letter-spacing: 3px; margin-bottom: 12px; }
+.hero h1 { font-size: 36px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; margin-bottom: 14px; line-height: 1.2; }
+.hero .intro { font-size: 16px; color: #475569; line-height: 1.7; margin-bottom: 20px; }
+.hero .meta { font-size: 13px; color: #94a3b8; padding-top: 20px; border-top: 1px solid #eef2f6; }
+.hero .meta strong { color: #475569; font-weight: 600; }
+.section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px 40px;
+  border: 1px solid #e5ebf3;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0,20,40,0.03);
+}
+.section h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #eef2f6;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section h2 .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 18px 0 8px;
+}
+.section p { color: #334155; margin-bottom: 12px; font-size: 15px; }
+.section p:last-child { margin-bottom: 0; }
+.section ul { list-style: none; padding-left: 0; margin: 12px 0; }
+.section ul li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 10px;
+  color: #334155;
+  font-size: 15px;
+}
+.section ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 15px;
+}
+.section ul.sub-list { padding-left: 20px; margin-top: 8px; }
+.section ul.sub-list li::before { content: '·'; font-size: 18px; top: -3px; color: #94a3b8; }
+.section .highlight {
+  background: #eff6ff;
+  border-left: 4px solid #2563eb;
+  padding: 14px 20px;
+  border-radius: 6px;
+  margin: 16px 0;
+  font-size: 14px;
+  color: #1e40af;
+}
+.section .highlight strong { color: #1e3a8a; }
+.section .contact-line {
+  background: #f8fafc;
+  border: 1px solid #e5ebf3;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 16px;
+  font-size: 15px;
+}
+.section .contact-line a { color: #2563eb; text-decoration: none; font-weight: 600; }
+.section .contact-line a:hover { text-decoration: underline; }
+.section a { color: #2563eb; }
+
+/* ============ 页脚（和主页一致） ============ */
+.site-footer{background:#E8E8E8 !important;color:#2D3748;padding:70px 0 30px;margin-top:60px}
+.site-footer .container{max-width:1280px;margin:0 auto;padding:0 32px}
+.site-footer .footer-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr 1.1fr;gap:36px;margin-bottom:46px}
+.site-footer .footer-brand .brand{display:block;margin-bottom:16px;text-decoration:none}
+.site-footer .footer-brand p{font-size:.88rem;max-width:320px;color:#2D3748;line-height:1.6}
+.site-footer .socials{display:flex;gap:22px;margin-top:20px}
+.site-footer .socials a{width:52px;height:52px;border-radius:8px;border:1px solid rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;color:#2D3748;text-decoration:none;transition:all .2s ease}
+.site-footer .socials a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+.site-footer .socials svg{width:26px;height:26px}
+.site-footer .footer-col h4{font-family:var(--font-mono);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#1A202C;margin-bottom:16px}
+.site-footer .footer-col a{display:block;font-size:.88rem;padding:4px 0;color:#2D3748;text-decoration:none;transition:color .2s ease}
+.site-footer .footer-col a:hover{color:var(--accent)}
+.site-footer .footer-bottom{border-top:1px solid rgba(0,0,0,.12);padding-top:24px;display:flex;flex-direction:column;gap:8px;font-size:.76rem;color:#4A5568}
+.site-footer .footer-bottom .legal-note{color:#2D3748}
+
+/* ============ 响应式 ============ */
+@media (max-width:980px){
+  .site-footer .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .site-footer .footer-grid{grid-template-columns:1fr}
+  .site-footer .container{padding:0 20px}
+  .top-bar{padding:12px 20px}
+  .top-bar .brand-name{font-size:16px}
+  .page-wrap{padding:24px 16px 40px}
+  .hero{padding:28px 24px;border-radius:12px}
+  .hero h1{font-size:26px}
+  .hero .intro{font-size:15px}
+  .section{padding:24px 22px;border-radius:12px}
+  .section h2{font-size:17px}
+  .section h2 .num{width:28px;height:28px;font-size:13px}
+  .section p,.section ul li{font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="top-bar">
+  <a href="https://gondolalights.com" class="brand">
+    <img src="https://gondolalights.com/TITATEC-logo-400.png" alt="TITATEC Lighting" />
+    <div>
+      <div class="brand-name">TITATEC LIGHTING</div>
+      <div class="brand-sub">PROFESSIONAL LED LIGHTING</div>
+    </div>
+  </a>
+  <a href="https://gondolalights.com" class="back-link">← Back to Home</a>
+</div>
+
+<!-- 主内容 -->
+<div class="page-wrap">
+
+  <div class="hero">
+    <div class="kicker">LEGAL DOCUMENT</div>
+    <h1>Privacy Policy</h1>
+    <p class="intro">
+      TITATEC is a brand operated by Capitec Inc. ("we," "us," or "our"). We operate the website <strong>https://gondolalights.com</strong> (brand &amp; quote portal) and the online store <strong>https://shop.gondolalights.com</strong> (the "Service"). This Privacy Policy explains how we collect, use, disclose, and safeguard your personal information when you use our Service. By accessing or using the Service, you agree to the collection and use of your information in accordance with this Privacy Policy.
+    </p>
+    <div class="meta">
+      <strong>Effective Date:</strong> October 1, 2023 &nbsp;·&nbsp; <strong>Last Updated:</strong> May 20, 2026
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">1</span> Information We Collect</h2>
+    <p>We may collect the following types of information:</p>
+    <ul>
+      <li><strong>Personal Identification Information:</strong> Name, email address, phone number, shipping address, and billing address, provided voluntarily when you create an account, request a quote, place an order, or contact us.</li>
+      <li><strong>Payment Information:</strong> We do not store your full credit card details. All payment processing is handled by secure third-party payment providers (Shopify Payments and its partners).</li>
+      <li><strong>Usage Data:</strong> Information about your device, IP address, browser type, pages visited, time spent, referring URLs, and interactions with our website, collected automatically to improve our Service.</li>
+      <li><strong>Quote Request Information:</strong> Store name, shelf layout details, and product preferences you submit through our quote estimator.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">2</span> How We Use Your Information</h2>
+    <p>We use the collected information to:</p>
+    <ul>
+      <li>Process and fulfill your orders and quote requests</li>
+      <li>Communicate with you about your orders, quotes, updates, or promotions</li>
+      <li>Respond to your inquiries and provide customer support</li>
+      <li>Improve our products, services, and website functionality</li>
+      <li>Deliver relevant advertising through Google and Meta platforms</li>
+      <li>Comply with legal obligations and prevent fraud</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">3</span> Cookies and Tracking Technologies</h2>
+    <p>We use cookies and similar tracking technologies (including <strong>localStorage</strong> for saving your quote draft) to enhance your browsing experience and analyze usage.</p>
+    <ul>
+      <li><strong>Essential cookies:</strong> required for the website and quote estimator to function</li>
+      <li><strong>Analytics cookies:</strong> used by Google Analytics to understand traffic and usage patterns</li>
+      <li><strong>Advertising cookies:</strong> used by Meta Pixel to measure ad performance and deliver relevant ads</li>
+    </ul>
+    <p>You can manage or disable cookie preferences through your browser settings. Note that disabling essential cookies may affect website functionality.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">4</span> Third-Party Services</h2>
+    <p>We use the following third-party services that may process your data:</p>
+    <ul>
+      <li><strong>Shopify</strong> — for our online store, order processing, and payment handling. See <a href="https://www.shopify.com/legal/privacy" target="_blank" rel="noopener">Shopify's Privacy Policy</a>.</li>
+      <li><strong>EmailJS</strong> — for sending quote request emails. See <a href="https://www.emailjs.com/legal/privacy-policy/" target="_blank" rel="noopener">EmailJS's Privacy Policy</a>.</li>
+      <li><strong>Google Analytics</strong> — for website traffic analysis. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.</li>
+      <li><strong>Meta Pixel (Facebook Pixel)</strong> — for advertising measurement and remarketing. See <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener">Meta's Privacy Policy</a>.</li>
+    </ul>
+    <p>These providers have their own privacy policies, and we encourage you to review them.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">5</span> Information Sharing</h2>
+    <p>We <strong>do not sell, trade, or rent</strong> your personal information to third parties, except:</p>
+    <ul>
+      <li>To trusted service providers (payment processors, shipping carriers, Shopify, EmailJS, Google, Meta) who assist us in operating our business, subject to confidentiality agreements.</li>
+      <li>As required by law or to protect our rights, property, or safety.</li>
+      <li>In connection with a merger, acquisition, or sale of assets, in which case your information may be transferred.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">6</span> Your Rights</h2>
+    <p>Depending on your location, you may have the following rights regarding your personal information:</p>
+    <ul>
+      <li><strong>Access</strong> — request a copy of the personal data we hold about you</li>
+      <li><strong>Correction</strong> — request correction of inaccurate data</li>
+      <li><strong>Deletion</strong> — request deletion of your personal data</li>
+      <li><strong>Opt-out</strong> — unsubscribe from marketing communications</li>
+      <li><strong>Data Portability</strong> — request a portable copy of your data</li>
+    </ul>
+    <p>You may request access to, correction of, or deletion of your personal information by contacting us at <a href="mailto:james@gondolalights.com">james@gondolalights.com</a>. We will respond to your request in accordance with applicable law.</p>
+    <div class="highlight">
+      <strong>California Residents (CCPA):</strong> You have the right to know what personal information we collect, to request deletion, and to opt out of the "sale" of personal information. We do not sell personal information.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">7</span> Data Security</h2>
+    <p>We implement industry-standard security measures to protect your personal information from unauthorized access, disclosure, alteration, or destruction. However, no method of transmission over the Internet is 100% secure, and we cannot guarantee absolute security.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">8</span> Data Retention</h2>
+    <p>We retain personal information for as long as necessary to fulfill the purposes described in this policy, comply with legal obligations, resolve disputes, and enforce our agreements.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">9</span> Children's Privacy</h2>
+    <p>Our services are not directed to children under 13. We do not knowingly collect personal information from children. If you believe we have collected information from a child, please contact us so we can delete it.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">10</span> Governing Law</h2>
+    <p>This Privacy Policy is governed by the laws of the <strong>State of California</strong>, United States.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">11</span> Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. The updated version will be posted on this page with a revised "Last Updated" date. Continued use of our services after changes constitutes acceptance of the updated policy.</p>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">12</span> Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy or how we handle your data, please contact us:</p>
+    <div class="contact-line">
+      <div style="margin-bottom:6px;"><strong>Email:</strong> <a href="mailto:james@gondolalights.com">james@gondolalights.com</a></div>
+      <div style="margin-bottom:6px;"><strong>Phone:</strong> +1 949-685-3792</div>
+      <div style="margin-bottom:6px;"><strong>Official Business Address:</strong> 2441 N TUSTIN AVE UNIT# H, Santa Ana, California 92705-1661</div>
+      <div><strong>Business Hours:</strong> 9AM – 5PM, business workdays</div>
+    </div>
+    <p style="margin-top:16px;font-size:13px;color:#94a3b8;">This Privacy Policy is issued by Capitec Inc., operating as TITATEC Lighting.</p>
+  </div>
+
+</div>
+
+<!-- ===== Footer ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="https://gondolalights.com" class="brand" aria-label="TITATEC home">
+          <span class="brand-name" style="color:#D7A63A;font-size:32px;font-weight:bold;letter-spacing:1px;display:block;">TITATEC<span class="dot">.</span></span>
+          <span class="brand-sub" style="color:#7C8BA0;font-size:16px;letter-spacing:0.5px;">Gondola LED Lighting</span>
+        </a>
+        <p>TITATEC designs and supplies under-shelf LED lighting, backlit display systems, and digital display integration for retail gondola shelving — for supermarkets, convenience stores and specialty retailers.</p>
+        <div class="socials">
+          <a href="https://www.facebook.com/TITATEClights" aria-label="TITATEC on Facebook" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7h2.4l.36-2.8H13.5V9.4c0-.81.22-1.36 1.38-1.36h1.48V5.55c-.26-.03-1.13-.11-2.15-.11-2.13 0-3.59 1.3-3.59 3.69v2.07H8.2V14h2.42v7h2.88z"/></svg></a>
+          <a href="https://www.instagram.com/gondolalights/" aria-label="TITATEC on Instagram" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.youtube.com/@GondolaLights" aria-label="TITATEC on YouTube" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.6 2.6 0 00-1.83-1.84C18.18 5 12 5 12 5s-6.18 0-7.77.36A2.6 2.6 0 002.4 7.2 27 27 0 002 12a27 27 0 00.4 4.8 2.6 2.6 0 001.83 1.84C5.82 19 12 19 12 19s6.18 0 7.77-.36a2.6 2.6 0 001.83-1.84A27 27 0 0022 12a27 27 0 00-.4-4.8zM10 15.2V8.8l5.2 3.2L10 15.2z"/></svg></a>
+          <a href="https://www.tiktok.com/@gondola_lights?_r=1&_t=ZT-95kLuw42Vo5" aria-label="TITATEC on TikTok" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.4 2.2 1.7 3.6 3.9 3.8v2.8c-1.4 0-2.7-.4-3.9-1.2v5.7c0 3.6-2.4 6.1-5.9 6.1A5.7 5.7 0 014.9 14.5c0-3.4 2.6-6 6-5.9v2.9a3 3 0 00-3 3 3 3 0 003 3c1.6 0 2.7-1.2 2.7-3V3h2z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>PRODUCTS</h4>
+        <a href="https://gondolalights.com/#p1">Under-Shelf LED Kits</a>
+        <a href="https://gondolalights.com/#p2">Backlit Display Panels</a>
+        <a href="https://gondolalights.com/#p3">LED + Digital Display</a>
+        <a href="https://gondolalights.com/#p4">Custom &amp; OEM Programs</a>
+        <a href="https://gondolalights.com/#new-arrival">New Arrival</a>
+      </div>
+      <div class="footer-col">
+        <h4>APPLICATIONS</h4>
+        <a href="https://gondolalights.com/#app1">Supermarkets &amp; Grocery</a>
+        <a href="https://gondolalights.com/#app2">Convenience &amp; C-Store</a>
+        <a href="https://gondolalights.com/#app3">Pharmacy &amp; Health</a>
+        <a href="https://gondolalights.com/#app4">Auto Parts &amp; Hardware</a>
+        <a href="https://gondolalights.com/#app5">Cosmetics &amp; Beauty</a>
+      </div>
+      <div class="footer-col">
+        <h4>COMPANY</h4>
+        <a href="https://gondolalights.com/#about">About TITATEC</a>
+        <a href="https://gondolalights.com/#about">Capabilities</a>
+        <a href="https://gondolalights.com/#contact">Contact &amp; Inquiries</a>
+        <a href="https://gondolalights.com/#contact">Wholesale &amp; OEM</a>
+      </div>
+      <div class="footer-col">
+        <h4>LEGAL</h4>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="shipping-and-return.html">Shipping &amp; Return</a>
+        <a href="warranty.html">Warranty Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 TITATEC. Operated by Capitec Inc.</span>
+      <span class="legal-note">TITATEC&reg; is a registered trademark of Forthsemi Co., Ltd., used under license.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
