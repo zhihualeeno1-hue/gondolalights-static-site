@@ -2398,6 +2398,11 @@ function goToProduct(id) {
   function setMenu(open){
     document.body.classList.toggle('menu-open', open);
     menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+       if (open) {
+      menu.removeAttribute('inert');
+    } else {
+      menu.setAttribute('inert', '');
+    }
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
   toggle.addEventListener('click', function(){ setMenu(!document.body.classList.contains('menu-open')); });
