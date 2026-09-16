@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="https://gondolalights.com/favicon.svg" type="image/svg+xml">
 <title>Titatec Lighting - Quote Estimator</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -50,6 +51,15 @@ body { font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif; ba
 .shelf-item .shelf-field input[type="number"] { border: 1.5px solid #dce1e8; border-radius: 6px; padding: 4px 8px; width: 70px; font-size: 14px; font-weight: 500; outline: none; text-align: center; }
 .row-subtotal { display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding-top: 10px; margin-top: 4px; border-top: 1px dashed #e2e8f0; font-size: 14px; font-weight: 600; color: #0f172a; }
 .row-subtotal .subtotal-value { color: #2563eb; font-size: 16px; }
+.row-subtotal-note {
+  text-align: right;
+  font-size: 12px;
+  color: #2563eb;
+  font-weight: 500;
+  padding-right: 2px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
 .grand-total { background: #f1f5f9; border-radius: 16px; padding: 20px 24px; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border: 1px solid #e2e8f0; }
 .grand-total .gt-label { font-size: 15px; font-weight: 600; color: #475569; }
 .grand-total .gt-label { font-size: 20px; font-weight: 700; color: #dc2626; letter-spacing: 0.5px; }
@@ -134,6 +144,7 @@ body { font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif; ba
 <div id="rowsContainer"></div>
 <div style="margin-top:16px;"><button class="btn btn-secondary" id="btnAddRow">+ Add Row</button></div>
 <div class="grand-total">
+    <div id="discountLine" style="display:none;font-size:20px;color:#2563eb;font-weight:800;white-space:nowrap;"></div>
   <div class="gt-label">Grand Total</div>
   <div class="gt-value"><span class="currency">$</span><span id="grandTotal">0.00</span></div>
 </div>
@@ -357,21 +368,277 @@ function deleteShelf(rowId, shelfId) {
 /* ============================================================
    计算：lightLength = length * levels
    ============================================================ */
-function calcShelf(shelf) {
-    var lightLength = shelf.length * shelf.levels;
-    var subtotal = lightLength * UNIT_PRICE;
-    return { lightLength: lightLength, subtotal: subtotal };
+/* ============================================================
+   报价常量
+   ============================================================ */
+var PRICE = {
+  lightBar: { '30': 22, '36': 24, '40': 27, '48': 29 },
+  track: 20,
+  driver: { '50W': 39.99, '80W': 69.99, '220W': 79.99, '320W': 99.99 },
+  extension: 16.99,
+  acPlug: 19.99
+};
+
+/* ============================================================
+   辅助函数
+   ============================================================ */
+function emptyBOM() {
+  return { tracks: 0, drivers: {}, ac: 0, extensions: 0 };
 }
+
+function mergeBOM() {
+  var result = emptyBOM();
+  for (var i = 0; i < arguments.length; i++) {
+    var b = arguments[i];
+    result.tracks += b.tracks;
+    result.ac += b.ac;
+    result.extensions += b.extensions;
+    for (var w in b.drivers) {
+      result.drivers[w] = (result.drivers[w] || 0) + b.drivers[w];
+    }
+  }
+  return result;
+}
+
+function lightBarTotal(shelves) {
+  var total = 0;
+  for (var i = 0; i < shelves.length; i++) {
+    var s = shelves[i];
+    var unit = PRICE.lightBar[String(s.length)] || 24;
+    total += unit * s.levels;
+  }
+  return total;
+}
+
+function totalBars(shelves) {
+  var total = 0;
+  for (var i = 0; i < shelves.length; i++) {
+    total += shelves[i].levels;
+  }
+  return total;
+}
+
+/* ============================================================
+   规则 1-2：单组 shelf
+   ============================================================ */
+function rule1or2(shelf) {
+  var bom = emptyBOM();
+  if (shelf.levels <= 4) {
+    bom.tracks = 1;
+    bom.drivers['50W'] = 1;
+  } else {
+    bom.tracks = 1;
+    bom.drivers['80W'] = 1;
+  }
+  bom.ac = 1;
+  return bom;
+}
+
+/* ============================================================
+   规则 3：2 组 shelf
+   ============================================================ */
+function rule3(shelves) {
+  var bom = mergeBOM(rule1or2(shelves[0]), rule1or2(shelves[1]));
+  bom.extensions = 1;
+  return bom;
+}
+
+/* ============================================================
+   规则 4：3 组 shelf
+   ============================================================ */
+function rule4(shelves) {
+  var bars = totalBars(shelves);
+  var bom = emptyBOM();
+  bom.tracks = 2;
+  bom.ac = 1;
+  if (bars <= 8) {
+    bom.drivers['80W'] = 1;
+  } else {
+    bom.drivers['220W'] = 1;
+  }
+  return bom;
+}
+
+/* ============================================================
+   规则 5：4 组 shelf
+   ============================================================ */
+function rule5(shelves) {
+  var bars = totalBars(shelves);
+  var bom = emptyBOM();
+  bom.tracks = 2;
+  bom.ac = 1;
+  if (bars <= 16) {
+    bom.drivers['220W'] = 1;
+  } else {
+    bom.drivers['320W'] = 1;
+  }
+  return bom;
+}
+
+/* ============================================================
+   规则 6：5 组 shelf
+   ============================================================ */
+function rule6(shelves) {
+  var bars = totalBars(shelves);
+  var bom = emptyBOM();
+  bom.ac = 1;
+  if (bars <= 20) {
+    bom.tracks = 2;
+    bom.drivers['220W'] = 1;
+  } else if (bars <= 32) {
+    bom.tracks = 2;
+    bom.drivers['320W'] = 1;
+  } else {
+    bom.tracks = 4;
+    bom.drivers['320W'] = 1;
+    bom.drivers['80W'] = 1;
+  }
+  return bom;
+}
+
+/* ============================================================
+   规则 7：6 组 shelf
+   ============================================================ */
+function rule7(shelves) {
+  var bom = mergeBOM(rule6(shelves.slice(0, 5)), rule1or2(shelves[5]));
+  bom.extensions = 1;
+  return bom;
+}
+
+/* ============================================================
+   规则 8：7 组 shelf
+   ============================================================ */
+function rule8(shelves) {
+  var bom = mergeBOM(rule6(shelves.slice(0, 5)), rule3(shelves.slice(5)));
+  bom.extensions += 1;
+  return bom;
+}
+
+/* ============================================================
+   规则 9：8 组 shelf
+   ============================================================ */
+function rule9(shelves) {
+  var bom = mergeBOM(rule6(shelves.slice(0, 5)), rule4(shelves.slice(5)));
+  bom.extensions += 2;
+  return bom;
+}
+
+/* ============================================================
+   规则 10：9 组 shelf
+   ============================================================ */
+function rule10(shelves) {
+  return mergeBOM(rule6(shelves.slice(0, 5)), rule5(shelves.slice(5)));
+}
+
+/* ============================================================
+   规则 11-19：10-18 组
+   ============================================================ */
+function rule11(shelves) {
+  return mergeBOM(rule6(shelves.slice(0, 5)), rule6(shelves.slice(5)));
+}
+function rule12(shelves) {
+  return mergeBOM(rule7(shelves.slice(0, 6)), rule6(shelves.slice(6)));
+}
+function rule13(shelves) {
+  return mergeBOM(rule7(shelves.slice(0, 6)), rule7(shelves.slice(6)));
+}
+function rule14(shelves) {
+  return mergeBOM(rule7(shelves.slice(0, 6)), rule8(shelves.slice(6)));
+}
+function rule15(shelves) {
+  return mergeBOM(rule8(shelves.slice(0, 7)), rule8(shelves.slice(7)));
+}
+function rule16(shelves) {
+  return mergeBOM(rule8(shelves.slice(0, 7)), rule9(shelves.slice(7)));
+}
+function rule17(shelves) {
+  return mergeBOM(rule9(shelves.slice(0, 8)), rule9(shelves.slice(8)));
+}
+function rule18(shelves) {
+  return mergeBOM(rule9(shelves.slice(0, 8)), rule10(shelves.slice(8)));
+}
+function rule19(shelves) {
+  return mergeBOM(rule10(shelves.slice(0, 9)), rule10(shelves.slice(9)));
+}
+
+/* ============================================================
+   主入口
+   ============================================================ */
+function calcRowBOM(shelves) {
+  var n = shelves.length;
+  if (n === 1) return rule1or2(shelves[0]);
+  if (n === 2) return rule3(shelves);
+  if (n === 3) return rule4(shelves);
+  if (n === 4) return rule5(shelves);
+  if (n === 5) return rule6(shelves);
+  if (n === 6) return rule7(shelves);
+  if (n === 7) return rule8(shelves);
+  if (n === 8) return rule9(shelves);
+  if (n === 9) return rule10(shelves);
+  if (n === 10) return rule11(shelves);
+  if (n === 11) return rule12(shelves);
+  if (n === 12) return rule13(shelves);
+  if (n === 13) return rule14(shelves);
+  if (n === 14) return rule15(shelves);
+  if (n === 15) return rule16(shelves);
+  if (n === 16) return rule17(shelves);
+  if (n === 17) return rule18(shelves);
+  if (n === 18) return rule19(shelves);
+  return null;
+}
+
+/* ============================================================
+   Row 小计
+   ============================================================ */
 function calcRowSubtotal(row) {
-    var s = 0;
-    for (var i = 0; i < row.shelves.length; i++) s += calcShelf(row.shelves[i]).subtotal;
-    return s;
+  var shelves = row.shelves;
+  if (shelves.length >= 19) return 0;
+  if (shelves.length === 0) return 0;
+
+  var bars = lightBarTotal(shelves);
+  var bom = calcRowBOM(shelves);
+  if (!bom) return 0;
+
+  var total = bars;
+  total += bom.tracks * PRICE.track;
+  for (var w in bom.drivers) {
+    total += bom.drivers[w] * PRICE.driver[w];
+  }
+  total += bom.ac * PRICE.acPlug;
+  total += bom.extensions * PRICE.extension;
+
+  return total;
 }
+
+/* ============================================================
+   Grand Total（含折扣）
+   ============================================================ */
 function calcGrandTotal() {
-    var t = 0;
-    for (var i = 0; i < rows.length; i++) t += calcRowSubtotal(rows[i]);
-    if (needInstallCheckbox.checked) t += parseFloat(installFeeInput.value) || 0;
-    return t;
+  var subtotal = 0;
+  for (var i = 0; i < rows.length; i++) {
+    subtotal += calcRowSubtotal(rows[i]);
+  }
+
+  var installFee = 0;
+  if (needInstallCheckbox.checked) {
+    installFee = parseFloat(installFeeInput.value) || 0;
+  }
+
+  var discountPct = 0;
+  if (subtotal >= 1000 && subtotal <= 1499) { discountPct = 0.05; }
+  else if (subtotal >= 1500 && subtotal <= 1999) { discountPct = 0.07; }
+  else if (subtotal >= 2000 && subtotal <= 2999) { discountPct = 0.09; }
+
+  var discount = subtotal * discountPct;
+  var final = subtotal - discount + installFee;
+
+  return {
+    subtotal: subtotal,
+    discountPct: discountPct,
+    discount: discount,
+    installFee: installFee,
+    final: final
+  };
 }
 
 /* ============================================================
@@ -435,8 +702,9 @@ function renderRows() {
             html += '<button class="btn btn-danger" data-delete-shelf="' + shelf.id + '" data-row-id="' + row.id + '" title="Delete Shelf">X</button>';
             html += '</div>';
         }
-        html += '</div><div class="row-subtotal"><span>Row Subtotal:</span>';
-        html += '<span class="subtotal-value">$' + rowSubtotal.toFixed(2) + '</span></div></div>';
+           html += '</div><div class="row-subtotal"><span>Row Subtotal:</span>';
+           html += '<span class="subtotal-value">$' + rowSubtotal.toFixed(2) + '</span></div>';
+           html += '<div class="row-subtotal-note">(including power tracks, LED drivers, AC plug and all accessories)</div></div>';
     }
     rowsContainer.innerHTML = html;
     bindEvents();
@@ -523,7 +791,20 @@ function bindEvents() {
     }
 }
 
-function renderGrandTotal() { grandTotalEl.textContent = calcGrandTotal().toFixed(2); }
+function renderGrandTotal() {
+  var gt = calcGrandTotal();
+  grandTotalEl.textContent = gt.final.toFixed(2);
+  
+  var discountEl = document.getElementById('discountLine');
+  if (discountEl) {
+    if (gt.discountPct > 0) {
+      discountEl.style.display = 'block';
+      discountEl.innerHTML = 'Discount (' + (gt.discountPct * 100) + '%): -$' + gt.discount.toFixed(2);
+    } else {
+      discountEl.style.display = 'none';
+    }
+  }
+}
 
 /* ============================================================
    全局事件
@@ -649,16 +930,15 @@ function generateQuoteText() {
         text += '  ' + row.name + '\n';
         text += '  ' + dash.substring(0, row.name.length + 4) + '\n';
 
-        for (var s = 0; s < row.shelves.length; s++) {
-            var shelf = row.shelves[s];
-            var result = calcShelf(shelf);
-            totalShelves += shelf.levels;
-            text += '    ' + shelf.name + '\n';
-            text += '      Length:     ' + shelf.length + ' inch\n';
-            text += '      Levels:     ' + shelf.levels + '\n';
-            text += '      Subtotal:   $' + result.subtotal.toFixed(2) + '\n\n';
-        }
-        text += '  ' + row.name + ' Subtotal: $' + rowSubtotal.toFixed(2) + '\n\n';
+      for (var s = 0; s < row.shelves.length; s++) {
+      var shelf = row.shelves[s];
+      totalShelves += shelf.levels;
+        text += '    ' + shelf.name + '\n';
+        text += '      Length:     ' + shelf.length + ' inch\n';
+        text += '      Levels:     ' + shelf.levels + '\n\n';
+}
+      text += '  ' + row.name + ' Subtotal: $' + rowSubtotal.toFixed(2) + '\n';
+      text += '    (including power tracks, LED drivers, AC plug and all accessories)\n\n';
     }
 
     var installChecked = needInstallCheckbox.checked;
@@ -714,28 +994,30 @@ function generateQuoteHtml() {
         var rowSubtotal = calcRowSubtotal(row);
         grandTotal += rowSubtotal;
 
-        for (var s = 0; s < row.shelves.length; s++) {
-            var shelf = row.shelves[s];
-            var result = calcShelf(shelf);
-            totalShelves += shelf.levels;
+       for (var s = 0; s < row.shelves.length; s++) {
+     var shelf = row.shelves[s];
+      totalShelves += shelf.levels;
 
-            var rowLabel = (s === 0) ? esc(row.name) : '';
-            var rowLabelCell = rowLabel
-                ? '<td style="' + tdStyle + 'font-weight:600;color:#2563eb;vertical-align:top;">' + rowLabel + '</td>'
-                : '<td style="' + tdMuted + 'vertical-align:top;"></td>';
+     var rowLabel = (s === 0) ? esc(row.name) : '';
+     var rowLabelCell = rowLabel
+     ? '<td style="' + tdStyle + 'font-weight:600;color:#2563eb;vertical-align:top;">' + rowLabel + '</td>'
+     : '<td style="' + tdMuted + 'vertical-align:top;"></td>';
 
-            detailRows += '<tr>' +
-                rowLabelCell +
-                '<td style="' + tdStyle + '">' + esc(shelf.name) + '</td>' +
-                '<td style="' + tdRight + '">' + shelf.length + '&quot;</td>' +
-                '<td style="' + tdRight + '">' + shelf.levels + '</td>' +
-                '<td style="' + tdRight + '">$' + result.subtotal.toFixed(2) + '</td>' +
-            '</tr>';
-        }
+     detailRows += '<tr>' +
+      rowLabelCell +
+     '<td style="' + tdStyle + '">' + esc(shelf.name) + '</td>' +
+     '<td style="' + tdRight + '">' + shelf.length + '&quot;</td>' +
+     '<td style="' + tdRight + '">' + shelf.levels + '</td>' +
+     '<td style="' + tdRight + '">—</td>' +
+     '</tr>';
+    }
 
         detailRows += '<tr>' +
-            '<td colspan="4" style="' + subtotalLabel + '">' + esc(row.name) + ' Subtotal</td>' +
-            '<td style="' + subtotalTd + '">$' + rowSubtotal.toFixed(2) + '</td>' +
+        '<td colspan="4" style="' + subtotalLabel + '">' + esc(row.name) + ' Subtotal</td>' +
+        '<td style="' + subtotalTd + '">$' + rowSubtotal.toFixed(2) + '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td colspan="5" style="padding:6px 12px;font-size:11px;color:#2563eb;text-align:right;border:1px solid #e5ebf3;border-top:none;background:#f1f5f9;">(including power tracks, LED drivers, AC plug and all accessories)</td>' +
         '</tr>';
     }
 
