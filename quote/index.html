@@ -862,6 +862,22 @@ btnSendEmail.addEventListener('click', function() {
         quote_html: generateQuoteHtml()
     }).then(function() {
         localStorage.setItem('titatec_last_send', Date.now().toString());
+        var gt = calcGrandTotal();
+    fetch('https://script.google.com/macros/s/AKfycbzNK1NrFjUckhijzqQnvchRXZ1Q22yN0vn9rPqvLySt2rODntTt6EdF05IX-po--oVC/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        quoteNo: currentQuoteNo,
+        storeName: storeName,
+        customerEmail: email,
+        totalRows: rows.length,
+        grandTotal: gt.final,
+        discount: gt.discount,
+        bomDetails: generateBOMText()
+      })
+    });
+
         modalOverlay.classList.remove('active');
         alert('Quote sent to ' + email + ' successfully.\nQuote No: ' + currentQuoteNo);
     }).catch(function(err) {
@@ -900,7 +916,45 @@ function fallbackCopy(text, cb) {
 /* ============================================================
    报价文本生成（网页弹窗预览用）
    ============================================================ */
-function generateQuoteText() {
+function generateBOMText() {
+  var text = '';
+  for (var r = 0; r < rows.length; r++) {
+    var row = rows[r];
+    var bom = calcRowBOM(row.shelves);
+    if (!bom) continue;
+
+    // 统计每个尺寸的灯条数量
+    var barCount = {};
+    for (var i = 0; i < row.shelves.length; i++) {
+      var s = row.shelves[i];
+      var key = String(s.length);
+      barCount[key] = (barCount[key] || 0) + s.levels;
+    }
+    var barsText = [];
+    for (var k in barCount) {
+      barsText.push(k + '"x' + barCount[k]);
+    }
+
+    text += 'Row ' + (r + 1) + ' (' + row.shelves.length + ' shelves): ';
+    text += 'Bars=' + barsText.join(', ');
+    text += ', Tracks=' + bom.tracks;
+
+    var driversText = [];
+    for (var w in bom.drivers) {
+      driversText.push(w + 'x' + bom.drivers[w]);
+    }
+    if (driversText.length) {
+      text += ', Drivers=' + driversText.join('+');
+    }
+    text += ', AC=' + bom.ac;
+    text += ', Ext=' + bom.extensions;
+    text += ', Subtotal=$' + calcRowSubtotal(row).toFixed(2);
+    text += ' | ';
+  }
+  return text;
+}
+
+   function generateQuoteText() {
     var now = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     var line = '=======================================================';
     var dash = '-------------------------------------------------------';
