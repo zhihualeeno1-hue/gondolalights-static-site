@@ -147,6 +147,17 @@ body { font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif; ba
     <div id="discountLine" style="display:none;font-size:20px;color:#2563eb;font-weight:800;white-space:nowrap;"></div>
   <div class="gt-label">Grand Total</div>
   <div class="gt-value"><span class="currency">$</span><span id="grandTotal">0.00</span></div>
+</div><div style="margin-top:12px;padding:14px 20px;background:#f8fafc;border:1px solid #e5ebf3;border-radius:12px;">
+  <label style="display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#334155;cursor:pointer;">
+    <input type="checkbox" id="overrideEnabled" style="width:16px;height:16px;accent-color:#2563eb;cursor:pointer;" />
+    Override with custom price
+  </label>
+  <div id="overrideInputWrap" style="display:none;margin-top:10px;align-items:center;gap:8px;">
+    <span style="font-size:15px;font-weight:600;color:#2563eb;">$</span>
+    <input type="number" id="overrideAmount" min="0" step="0.01" placeholder="850.00"
+           style="width:180px;border:1.5px solid #dce1e8;border-radius:8px;padding:8px 12px;font-size:15px;font-weight:600;color:#0f172a;outline:none;" />
+    <span style="font-size:13px;color:#64748b;">USD</span>
+  </div>
 </div>
 <div style="margin-top:10px;font-size:15px;color:#64748b;line-height:1.6;text-align:center;">
   ✅ All necessary tracks, LED drivers, and connection cables are automatically included in this quote — no additional parts need to be purchased for installation.
@@ -239,6 +250,9 @@ var btnCancelModal      = document.getElementById('btnCancelModal');
 var btnSendEmail        = document.getElementById('btnSendEmail');
 var btnCopyQuote        = document.getElementById('btnCopyQuote');
 var hpWebsiteInput      = document.getElementById('hp_website');
+var overrideEnabled     = document.getElementById('overrideEnabled');
+var overrideAmount      = document.getElementById('overrideAmount');
+var overrideInputWrap   = document.getElementById('overrideInputWrap');
 
 /* ============================================================
    工具
@@ -614,6 +628,21 @@ function calcRowSubtotal(row) {
    Grand Total（含折扣）
    ============================================================ */
 function calcGrandTotal() {
+  // ✅ Override 优先
+  if (overrideEnabled && overrideEnabled.checked) {
+    var custom = parseFloat(overrideAmount.value) || 0;
+    if (custom > 0) {
+      return {
+        subtotal: custom,
+        discountPct: 0,
+        discount: 0,
+        installFee: 0,
+        final: custom,
+        isOverride: true
+      };
+    }
+  }
+
   var subtotal = 0;
   for (var i = 0; i < rows.length; i++) {
     subtotal += calcRowSubtotal(rows[i]);
@@ -637,7 +666,8 @@ function calcGrandTotal() {
     discountPct: discountPct,
     discount: discount,
     installFee: installFee,
-    final: final
+    final: final,
+    isOverride: false
   };
 }
 
@@ -797,9 +827,14 @@ function renderGrandTotal() {
   
   var discountEl = document.getElementById('discountLine');
   if (discountEl) {
-    if (gt.discountPct > 0) {
+        if (gt.isOverride) {
+      discountEl.style.display = 'block';
+      discountEl.innerHTML = '✅ Custom price applied';
+      discountEl.style.color = '#10b981';
+    } else if (gt.discountPct > 0) {
       discountEl.style.display = 'block';
       discountEl.innerHTML = 'Discount (' + (gt.discountPct * 100) + '%): -$' + gt.discount.toFixed(2);
+      discountEl.style.color = '#2563eb';
     } else {
       discountEl.style.display = 'none';
     }
@@ -812,6 +847,21 @@ function renderGrandTotal() {
 btnAddRow.addEventListener('click', addRow);
 needInstallCheckbox.addEventListener('change', function() { renderGrandTotal(); saveDraft(); });
 installFeeInput.addEventListener('input', function() { renderGrandTotal(); saveDraft(); });
+overrideEnabled.addEventListener('change', function() {
+  if (this.checked) {
+    overrideInputWrap.style.display = 'flex';
+    overrideAmount.focus();
+  } else {
+    overrideInputWrap.style.display = 'none';
+  }
+  renderGrandTotal();
+  saveDraft();
+});
+
+overrideAmount.addEventListener('input', function() {
+  renderGrandTotal();
+  saveDraft();
+});
 
 /* ============================================================
    打开提交弹窗
@@ -1009,8 +1059,9 @@ function generateBOMText() {
     } else {
         text += '  Installation Service:  Not Included\n';
     }
+    var gt = calcGrandTotal();
       text += '\n' + line + '\n';
-    text += '  GRAND TOTAL:           $' + grandTotal.toFixed(2) + '\n';
+    text += '  GRAND TOTAL:           $' + gt.final.toFixed(2) + '\n';
     text += line + '\n\n';
     text += '  All necessary tracks, LED drivers, and connection cables are\n';
     text += '  automatically included in this quote - no additional parts\n';
@@ -1138,11 +1189,11 @@ function generateQuoteHtml() {
     html += summaryRows;
     html += '</table>';
     html += '</div>';
-
+    var gt = calcGrandTotal();
     html += '<div style="padding:12px 28px;background:#2563eb;color:#ffffff;border-radius:0 0 12px 12px;">';
     html += '<table style="width:100%;border-collapse:collapse;"><tr>';
     html += '<td style="font-size:14px;font-weight:600;letter-spacing:0.5px;color:#ffffff;">GRAND TOTAL</td>';
-    html += '<td style="font-size:26px;font-weight:800;text-align:right;color:#ffffff;">$' + grandTotal.toFixed(2) + '</td>';
+    html += '<td style="font-size:26px;font-weight:800;text-align:right;color:#ffffff;">$' + gt.final.toFixed(2) + '</td>';
     html += '</tr></table>';
     html += '</div>';
     html += '<div style="margin-top:10px;font-size:15px;color:#64748b;line-height:1.6;text-align:center;">';
