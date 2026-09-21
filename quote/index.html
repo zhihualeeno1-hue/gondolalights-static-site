@@ -51,17 +51,8 @@ body { font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif; ba
 .shelf-item .shelf-field input[type="number"] { border: 1.5px solid #dce1e8; border-radius: 6px; padding: 4px 8px; width: 70px; font-size: 14px; font-weight: 500; outline: none; text-align: center; }
 .row-subtotal { display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding-top: 10px; margin-top: 4px; border-top: 1px dashed #e2e8f0; font-size: 14px; font-weight: 600; color: #0f172a; }
 .row-subtotal .subtotal-value { color: #2563eb; font-size: 16px; }
-.row-subtotal-note {
-  text-align: right;
-  font-size: 12px;
-  color: #2563eb;
-  font-weight: 500;
-  padding-right: 2px;
-  margin-top: 4px;
-  margin-bottom: 8px;
-}
+.row-subtotal-note { text-align: right; font-size: 12px; color: #2563eb; font-weight: 500; padding-right: 2px; margin-top: 4px; margin-bottom: 8px; }
 .grand-total { background: #f1f5f9; border-radius: 16px; padding: 20px 24px; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border: 1px solid #e2e8f0; }
-.grand-total .gt-label { font-size: 15px; font-weight: 600; color: #475569; }
 .grand-total .gt-label { font-size: 20px; font-weight: 700; color: #dc2626; letter-spacing: 0.5px; }
 .grand-total .gt-value { font-size: 40px; font-weight: 800; color: #dc2626; }
 .grand-total .gt-value .currency { font-size: 20px; font-weight: 600; margin-right: 2px; }
@@ -89,11 +80,7 @@ body { font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif; ba
 .submit-section { text-align: center; }
 .modal-box { padding: 24px 20px; }
 }
-/* ============ 页脚（和主页一致） ============ */
-:root {
-  --accent: #D7A63A;
-  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
-}
+:root { --accent: #D7A63A; --font-mono: 'IBM Plex Mono', 'Courier New', monospace; }
 .site-footer{background:#E8E8E8 !important;color:#2D3748;padding:70px 0 30px;margin-top:60px}
 .site-footer .container{max-width:1280px;margin:0 auto;padding:0 32px}
 .site-footer .footer-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr 1.1fr;gap:36px;margin-bottom:46px}
@@ -108,13 +95,17 @@ body { font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif; ba
 .site-footer .footer-col a:hover{color:var(--accent)}
 .site-footer .footer-bottom{border-top:1px solid rgba(0,0,0,.12);padding-top:24px;display:flex;flex-direction:column;gap:8px;font-size:.76rem;color:#4A5568}
 .site-footer .footer-bottom .legal-note{color:#2D3748}
-@media (max-width:980px){
-  .site-footer .footer-grid{grid-template-columns:1fr 1fr}
-}
-@media (max-width:760px){
-  .site-footer .footer-grid{grid-template-columns:1fr}
-  .site-footer .container{padding:0 20px}
-}
+@media (max-width:980px){ .site-footer .footer-grid{grid-template-columns:1fr 1fr} }
+@media (max-width:760px){ .site-footer .footer-grid{grid-template-columns:1fr} .site-footer .container{padding:0 20px} }
+.embed-only { display: none; }
+body.is-embedded .full-footer { display: none !important; }
+body.is-embedded .embed-only { display: block !important; }
+.compact-footer { padding: 20px 16px; background: #F3F6FA; border-top: 1px solid #E9ECEF; text-align: center; margin-top: 30px; }
+.compact-trust { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; font-size: 13px; color: #4B5A6F; margin-bottom: 12px; }
+.compact-trust span { display: inline-flex; align-items: center; gap: 6px; }
+.compact-copy { font-size: 12px; color: #9FB1C9; margin: 0; line-height: 1.6; }
+.compact-copy a { color: inherit; text-decoration: none; }
+.compact-copy a:hover { color: #0A1628; }
 </style>
 </head>
 <body>
@@ -142,32 +133,32 @@ body { font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif; ba
 <span>Tip: The top shelf level usually doesn't need lights. If your shelf has 5 levels, enter 4 here for the actual light bar calculation.</span>
 </div>
 <div id="rowsContainer"></div>
-<div style="margin-top:16px;"><button class="btn btn-secondary" id="btnAddRow">+ Add Row</button></div>
+<div style="margin-top:16px;"><button class="btn btn-secondary" id="btnAddRow">+ Add Another Row</button></div>
 <div class="grand-total">
     <div id="discountLine" style="display:none;font-size:20px;color:#2563eb;font-weight:800;white-space:nowrap;"></div>
   <div class="gt-label">Grand Total</div>
   <div class="gt-value"><span class="currency">$</span><span id="grandTotal">0.00</span></div>
-</div><div style="margin-top:12px;padding:14px 20px;background:#f8fafc;border:1px solid #e5ebf3;border-radius:12px;">
+</div>
+<div style="margin-top:12px;padding:14px 20px;background:#f8fafc;border:1px solid #e5ebf3;border-radius:12px;">
   <label style="display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#334155;cursor:pointer;">
     <input type="checkbox" id="overrideEnabled" style="width:16px;height:16px;accent-color:#2563eb;cursor:pointer;" />
     Override with custom price
   </label>
   <div id="overrideInputWrap" style="display:none;margin-top:10px;align-items:center;gap:8px;">
     <span style="font-size:15px;font-weight:600;color:#2563eb;">$</span>
-    <input type="number" id="overrideAmount" min="0" step="0.01" placeholder="850.00"
-           style="width:180px;border:1.5px solid #dce1e8;border-radius:8px;padding:8px 12px;font-size:15px;font-weight:600;color:#0f172a;outline:none;" />
+    <input type="number" id="overrideAmount" min="0" step="0.01" placeholder="850.00" style="width:180px;border:1.5px solid #dce1e8;border-radius:8px;padding:8px 12px;font-size:15px;font-weight:600;color:#0f172a;outline:none;" />
     <span style="font-size:13px;color:#64748b;">USD</span>
   </div>
 </div>
 <div style="margin-top:10px;font-size:15px;color:#64748b;line-height:1.6;text-align:center;">
-  ✅ All necessary tracks, LED drivers, and connection cables are automatically included in this quote — no additional parts need to be purchased for installation.
+  ✅ All necessary power tracks, LED drivers, and connection cables are automatically included in this quote — no additional parts need to be purchased for installation.
 </div>
 <div style="margin-top:10px;font-size:16px;color:#2563eb;font-weight:700;line-height:1.6;text-align:center;">
   📐 Once your order is placed, we will provide a detailed electrical wiring diagram to guide you through the installation.
 </div>
 <div class="submit-section">
 <button class="btn btn-primary" id="btnSubmit" style="padding:14px 40px;font-size:16px;">Submit Quote Request</button>
-<div class="submit-note">📧 The quote will be sent to your email for your reference.</div>
+<div class="submit-note">🔒 We will only use your email to send this quote and follow up about your project. No spam.</div>
 <div style="margin-top:14px;padding-top:14px;border-top:1px solid #e9edf2;font-size:13px;color:#475569;text-align:center;">
   <span style="color:#2563eb;font-weight:700;">🛡️ 3-Year Limited Warranty</span>
   <span style="color:#cbd5e1;padding:0 8px;">|</span>
@@ -203,35 +194,32 @@ body { font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif; ba
 <div class="modal-hint">If the email doesn't arrive within a few minutes, please check your spam folder, or use "Copy Quote" to send it manually.</div>
 </div>
 </div>
+
 <!-- EmailJS SDK -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
 <script>
 /* ============================================================
    EmailJS 配置
    ============================================================ */
 var EMAILJS_PUBLIC_KEY  = 'Ip7-GouIAYLg15fDm';
 var EMAILJS_SERVICE_ID  = 'service_rcukfi6';
-var EMAILJS_TEMPLATE_ID = 'template_ukfodbt';
+var EMAILJS_TEMPLATE_OFFICIAL = 'template_ukfodbt';
+var EMAILJS_TEMPLATE_PENDING  = 'template_ukfodbt';
+var MIN_DISCOUNT_RATE = 0.85;
 
 emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
-/* ============================================================
-   业务常量
-   ============================================================ */
 var UNIT_PRICE = 1.5;
 var MY_EMAIL = 'james@gondolalights.com';
 var STORAGE_KEY = 'titatec_quote_draft_v1';
 var SEND_THROTTLE_MS = 60000;
 
-/* ============================================================
-   状态
-   ============================================================ */
 var storeName = '';
 var rows = [];
 var nextRowId = 1;
 var nextShelfId = 1;
 var currentQuoteNo = '';
+var currentIsPendingReview = false;
 
 var storeNameInput      = document.getElementById('storeName');
 var btnStart            = document.getElementById('btnStart');
@@ -254,9 +242,6 @@ var overrideEnabled     = document.getElementById('overrideEnabled');
 var overrideAmount      = document.getElementById('overrideAmount');
 var overrideInputWrap   = document.getElementById('overrideInputWrap');
 
-/* ============================================================
-   工具
-   ============================================================ */
 function esc(s) {
     return String(s == null ? '' : s)
         .replace(/&/g, '&amp;').replace(/"/g, '&quot;')
@@ -272,9 +257,6 @@ function genQuoteNo() {
     return 'TIT-' + ymd + '-' + rand;
 }
 
-/* ============================================================
-   localStorage 草稿
-   ============================================================ */
 function saveDraft() {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -295,9 +277,6 @@ function clearDraft() {
     try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
 }
 
-/* ============================================================
-   初始化
-   ============================================================ */
 var draft = loadDraft();
 if (draft && draft.storeName && draft.rows && draft.rows.length > 0) {
     storeName = draft.storeName;
@@ -313,9 +292,6 @@ if (draft && draft.storeName && draft.rows && draft.rows.length > 0) {
     btnStart.disabled = true;
 }
 
-/* ============================================================
-   事件：店铺名 / 开始 / 清空
-   ============================================================ */
 storeNameInput.addEventListener('input', function() {
     btnStart.disabled = this.value.trim().length === 0;
 });
@@ -340,9 +316,6 @@ btnReset.addEventListener('click', function() {
     location.reload();
 });
 
-/* ============================================================
-   行 / 货架操作
-   ============================================================ */
 function addRow() {
     var rowId = nextRowId++;
     rows.push({ id: rowId, name: 'Row ' + rowId, shelves: [] });
@@ -379,12 +352,6 @@ function deleteShelf(rowId, shelfId) {
     row.shelves = ns; renderAll(); saveDraft();
 }
 
-/* ============================================================
-   计算：lightLength = length * levels
-   ============================================================ */
-/* ============================================================
-   报价常量
-   ============================================================ */
 var PRICE = {
   lightBar: { '30': 22, '36': 24, '40': 27, '48': 29 },
   track: 20,
@@ -393,9 +360,6 @@ var PRICE = {
   acPlug: 19.99
 };
 
-/* ============================================================
-   辅助函数
-   ============================================================ */
 function emptyBOM() {
   return { tracks: 0, drivers: {}, ac: 0, extensions: 0 };
 }
@@ -432,9 +396,6 @@ function totalBars(shelves) {
   return total;
 }
 
-/* ============================================================
-   规则 1-2：单组 shelf
-   ============================================================ */
 function rule1or2(shelf) {
   var bom = emptyBOM();
   if (shelf.levels <= 4) {
@@ -448,18 +409,12 @@ function rule1or2(shelf) {
   return bom;
 }
 
-/* ============================================================
-   规则 3：2 组 shelf
-   ============================================================ */
 function rule3(shelves) {
   var bom = mergeBOM(rule1or2(shelves[0]), rule1or2(shelves[1]));
   bom.extensions = 1;
   return bom;
 }
 
-/* ============================================================
-   规则 4：3 组 shelf
-   ============================================================ */
 function rule4(shelves) {
   var bars = totalBars(shelves);
   var bom = emptyBOM();
@@ -473,9 +428,6 @@ function rule4(shelves) {
   return bom;
 }
 
-/* ============================================================
-   规则 5：4 组 shelf
-   ============================================================ */
 function rule5(shelves) {
   var bars = totalBars(shelves);
   var bom = emptyBOM();
@@ -489,9 +441,6 @@ function rule5(shelves) {
   return bom;
 }
 
-/* ============================================================
-   规则 6：5 组 shelf
-   ============================================================ */
 function rule6(shelves) {
   var bars = totalBars(shelves);
   var bom = emptyBOM();
@@ -510,74 +459,38 @@ function rule6(shelves) {
   return bom;
 }
 
-/* ============================================================
-   规则 7：6 组 shelf
-   ============================================================ */
 function rule7(shelves) {
   var bom = mergeBOM(rule6(shelves.slice(0, 5)), rule1or2(shelves[5]));
   bom.extensions = 1;
   return bom;
 }
 
-/* ============================================================
-   规则 8：7 组 shelf
-   ============================================================ */
 function rule8(shelves) {
   var bom = mergeBOM(rule6(shelves.slice(0, 5)), rule3(shelves.slice(5)));
   bom.extensions += 1;
   return bom;
 }
 
-/* ============================================================
-   规则 9：8 组 shelf
-   ============================================================ */
 function rule9(shelves) {
   var bom = mergeBOM(rule6(shelves.slice(0, 5)), rule4(shelves.slice(5)));
   bom.extensions += 2;
   return bom;
 }
 
-/* ============================================================
-   规则 10：9 组 shelf
-   ============================================================ */
 function rule10(shelves) {
   return mergeBOM(rule6(shelves.slice(0, 5)), rule5(shelves.slice(5)));
 }
 
-/* ============================================================
-   规则 11-19：10-18 组
-   ============================================================ */
-function rule11(shelves) {
-  return mergeBOM(rule6(shelves.slice(0, 5)), rule6(shelves.slice(5)));
-}
-function rule12(shelves) {
-  return mergeBOM(rule7(shelves.slice(0, 6)), rule6(shelves.slice(6)));
-}
-function rule13(shelves) {
-  return mergeBOM(rule7(shelves.slice(0, 6)), rule7(shelves.slice(6)));
-}
-function rule14(shelves) {
-  return mergeBOM(rule7(shelves.slice(0, 6)), rule8(shelves.slice(6)));
-}
-function rule15(shelves) {
-  return mergeBOM(rule8(shelves.slice(0, 7)), rule8(shelves.slice(7)));
-}
-function rule16(shelves) {
-  return mergeBOM(rule8(shelves.slice(0, 7)), rule9(shelves.slice(7)));
-}
-function rule17(shelves) {
-  return mergeBOM(rule9(shelves.slice(0, 8)), rule9(shelves.slice(8)));
-}
-function rule18(shelves) {
-  return mergeBOM(rule9(shelves.slice(0, 8)), rule10(shelves.slice(8)));
-}
-function rule19(shelves) {
-  return mergeBOM(rule10(shelves.slice(0, 9)), rule10(shelves.slice(9)));
-}
+function rule11(shelves) { return mergeBOM(rule6(shelves.slice(0, 5)), rule6(shelves.slice(5))); }
+function rule12(shelves) { return mergeBOM(rule7(shelves.slice(0, 6)), rule6(shelves.slice(6))); }
+function rule13(shelves) { return mergeBOM(rule7(shelves.slice(0, 6)), rule7(shelves.slice(6))); }
+function rule14(shelves) { return mergeBOM(rule7(shelves.slice(0, 6)), rule8(shelves.slice(6))); }
+function rule15(shelves) { return mergeBOM(rule8(shelves.slice(0, 7)), rule8(shelves.slice(7))); }
+function rule16(shelves) { return mergeBOM(rule8(shelves.slice(0, 7)), rule9(shelves.slice(7))); }
+function rule17(shelves) { return mergeBOM(rule9(shelves.slice(0, 8)), rule9(shelves.slice(8))); }
+function rule18(shelves) { return mergeBOM(rule9(shelves.slice(0, 8)), rule10(shelves.slice(8))); }
+function rule19(shelves) { return mergeBOM(rule10(shelves.slice(0, 9)), rule10(shelves.slice(9))); }
 
-/* ============================================================
-   主入口
-   ============================================================ */
 function calcRowBOM(shelves) {
   var n = shelves.length;
   if (n === 1) return rule1or2(shelves[0]);
@@ -601,9 +514,6 @@ function calcRowBOM(shelves) {
   return null;
 }
 
-/* ============================================================
-   Row 小计
-   ============================================================ */
 function calcRowSubtotal(row) {
   var shelves = row.shelves;
   if (shelves.length >= 19) return 0;
@@ -624,56 +534,51 @@ function calcRowSubtotal(row) {
   return total;
 }
 
-/* ============================================================
-   Grand Total（含折扣）
-   ============================================================ */
 function calcGrandTotal() {
-  // ✅ Override 优先
-  if (overrideEnabled && overrideEnabled.checked) {
-    var custom = parseFloat(overrideAmount.value) || 0;
-    if (custom > 0) {
-      return {
-        subtotal: custom,
-        discountPct: 0,
-        discount: 0,
-        installFee: 0,
-        final: custom,
-        isOverride: true
-      };
-    }
-  }
-
-  var subtotal = 0;
-  for (var i = 0; i < rows.length; i++) {
-    subtotal += calcRowSubtotal(rows[i]);
-  }
+  var rawSubtotal = 0;
+  for (var i = 0; i < rows.length; i++) { rawSubtotal += calcRowSubtotal(rows[i]); }
 
   var installFee = 0;
-  if (needInstallCheckbox.checked) {
-    installFee = parseFloat(installFeeInput.value) || 0;
-  }
+  if (needInstallCheckbox.checked) { installFee = parseFloat(installFeeInput.value) || 0; }
 
   var discountPct = 0;
-  if (subtotal >= 1000 && subtotal <= 1499) { discountPct = 0.05; }
-  else if (subtotal >= 1500 && subtotal <= 1999) { discountPct = 0.07; }
-  else if (subtotal >= 2000 && subtotal <= 2999) { discountPct = 0.09; }
+  if (rawSubtotal >= 1000 && rawSubtotal <= 1499) { discountPct = 0.05; }
+  else if (rawSubtotal >= 1500 && rawSubtotal <= 1999) { discountPct = 0.07; }
+  else if (rawSubtotal >= 2000 && rawSubtotal <= 2999) { discountPct = 0.09; }
+  var discount = rawSubtotal * discountPct;
 
-  var discount = subtotal * discountPct;
-  var final = subtotal - discount + installFee;
+  var systemFinal = rawSubtotal - discount + installFee;
+
+  var overrideOn = overrideEnabled && overrideEnabled.checked;
+  var customPrice = overrideOn ? (parseFloat(overrideAmount.value) || 0) : 0;
+
+  if (overrideOn && customPrice > 0) {
+    var minAllowed = systemFinal * MIN_DISCOUNT_RATE;
+    var isPending = customPrice < minAllowed;
+
+    return {
+      subtotal: systemFinal,
+      discountPct: discountPct,
+      discount: discount,
+      installFee: installFee,
+      final: customPrice,
+      isOverride: true,
+      isPendingReview: isPending,
+      minAllowed: minAllowed
+    };
+  }
 
   return {
-    subtotal: subtotal,
+    subtotal: rawSubtotal,
     discountPct: discountPct,
     discount: discount,
     installFee: installFee,
-    final: final,
-    isOverride: false
+    final: systemFinal,
+    isOverride: false,
+    isPendingReview: false
   };
 }
 
-/* ============================================================
-   渲染
-   ============================================================ */
 function renderAll() { renderRows(); renderGrandTotal(); }
 
 function refreshTotalsOnly() {
@@ -704,7 +609,7 @@ function renderRows() {
         html += '<input type="text" value="' + esc(row.name) + '" data-row-name="' + row.id + '" placeholder="Row Name" />';
         html += '<span class="name-it-hint">(Name it!)</span>';
         html += '</div><div class="row-actions">';
-        html += '<button class="btn btn-secondary btn-sm" data-add-shelf="' + row.id + '">+ Add Shelf</button>';
+        html += '<button class="btn btn-secondary btn-sm" data-add-shelf="' + row.id + '">+ Add Another Shelf</button>';
         html += '<button class="btn btn-danger" data-delete-row="' + row.id + '" title="Delete Row">X</button>';
         html += '</div></div><div class="shelf-list">';
 
@@ -824,10 +729,14 @@ function bindEvents() {
 function renderGrandTotal() {
   var gt = calcGrandTotal();
   grandTotalEl.textContent = gt.final.toFixed(2);
-  
+
   var discountEl = document.getElementById('discountLine');
   if (discountEl) {
-        if (gt.isOverride) {
+    if (gt.isOverride && gt.isPendingReview) {
+      discountEl.style.display = 'block';
+      discountEl.innerHTML = '⏳ Custom price pending review';
+      discountEl.style.color = '#d97706';
+    } else if (gt.isOverride) {
       discountEl.style.display = 'block';
       discountEl.innerHTML = '✅ Custom price applied';
       discountEl.style.color = '#10b981';
@@ -841,9 +750,6 @@ function renderGrandTotal() {
   }
 }
 
-/* ============================================================
-   全局事件
-   ============================================================ */
 btnAddRow.addEventListener('click', addRow);
 needInstallCheckbox.addEventListener('change', function() { renderGrandTotal(); saveDraft(); });
 installFeeInput.addEventListener('input', function() { renderGrandTotal(); saveDraft(); });
@@ -863,29 +769,28 @@ overrideAmount.addEventListener('input', function() {
   saveDraft();
 });
 
-/* ============================================================
-   打开提交弹窗
-   ============================================================ */
 btnSubmit.addEventListener('click', function() {
     if (rows.length === 0) { alert('Please add at least one row before submitting.'); return; }
+
+    var gt = calcGrandTotal();
+    currentIsPendingReview = !!gt.isPendingReview;
+
     currentQuoteNo = genQuoteNo();
     quotePreview.textContent = generateQuoteText();
     customerEmailInput.value = '';
     if (hpWebsiteInput) hpWebsiteInput.value = '';
+
     modalOverlay.classList.add('active');
 });
+
 btnCancelModal.addEventListener('click', function() { modalOverlay.classList.remove('active'); });
 modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) modalOverlay.classList.remove('active'); });
 
-/* ============================================================
-   发送邮件（EmailJS + honeypot + 60 秒节流）
-   ============================================================ */
 btnSendEmail.addEventListener('click', function() {
-    /* 防护 1：Honeypot —— 机器人会填隐藏字段，真人不会 */
     var honeypot = hpWebsiteInput ? hpWebsiteInput.value : '';
     if (honeypot) {
         modalOverlay.classList.remove('active');
-        alert('Quote sent to ' + customerEmailInput.value.trim() + ' successfully.\nQuote No: ' + currentQuoteNo);
+        alert('Request sent to ' + customerEmailInput.value.trim() + ' successfully.\nQuote No: ' + currentQuoteNo);
         return;
     }
 
@@ -893,7 +798,6 @@ btnSendEmail.addEventListener('click', function() {
     if (!email) { alert('Please enter your email address.'); customerEmailInput.focus(); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); customerEmailInput.focus(); return; }
 
-    /* 防护 2：60 秒发送节流 */
     var lastSend = parseInt(localStorage.getItem('titatec_last_send') || '0', 10);
     var now = Date.now();
     if (now - lastSend < SEND_THROTTLE_MS) {
@@ -905,31 +809,43 @@ btnSendEmail.addEventListener('click', function() {
     btnSendEmail.disabled = true;
     btnSendEmail.textContent = 'Sending...';
 
-    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+    var gt = calcGrandTotal();
+    var isPending = !!gt.isPendingReview;
+    var templateId = isPending ? EMAILJS_TEMPLATE_PENDING : EMAILJS_TEMPLATE_OFFICIAL;
+    var quoteHtml = isPending ? generatePendingHtml() : generateQuoteHtml();
+
+    emailjs.send(EMAILJS_SERVICE_ID, templateId, {
         to_email: email,
         quote_no: currentQuoteNo,
         store_name: storeName,
-        quote_html: generateQuoteHtml()
+        quote_html: quoteHtml,
+        is_pending: isPending ? 'true' : 'false'
     }).then(function() {
         localStorage.setItem('titatec_last_send', Date.now().toString());
-        var gt = calcGrandTotal();
-    fetch('https://script.google.com/macros/s/AKfycbzNK1NrFjUckhijzqQnvchRXZ1Q22yN0vn9rPqvLySt2rODntTt6EdF05IX-po--oVC/exec', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        quoteNo: currentQuoteNo,
-        storeName: storeName,
-        customerEmail: email,
-        totalRows: rows.length,
-        grandTotal: gt.final,
-        discount: gt.discount,
-        bomDetails: generateBOMText()
-      })
-    });
+
+        fetch('https://script.google.com/macros/s/AKfycbzNK1NrFjUckhijzqQnvchRXZ1Q22yN0vn9rPqvLySt2rODntTt6EdF05IX-po--oVC/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                quoteNo: currentQuoteNo,
+                storeName: storeName,
+                customerEmail: email,
+                totalRows: rows.length,
+                grandTotal: gt.final,
+                discount: gt.discount,
+                isPendingReview: isPending,
+                bomDetails: generateBOMText()
+            })
+        });
 
         modalOverlay.classList.remove('active');
-        alert('Quote sent to ' + email + ' successfully.\nQuote No: ' + currentQuoteNo);
+
+        if (isPending) {
+            alert("Request received!\n\nYour custom price is below our standard range. Our team will review it and send you an accurate quote shortly.\n\nQuote No: " + currentQuoteNo);
+        } else {
+            alert('Quote sent to ' + email + ' successfully.\nQuote No: ' + currentQuoteNo);
+        }
     }).catch(function(err) {
         console.error('EmailJS error:', err);
         alert('Failed to send email. Please use "📋 Copy Quote" and send it manually.');
@@ -939,9 +855,6 @@ btnSendEmail.addEventListener('click', function() {
     });
 });
 
-/* ============================================================
-   Copy Quote 兜底
-   ============================================================ */
 btnCopyQuote.addEventListener('click', function() {
     var text = generateQuoteText();
     var done = function() {
@@ -963,9 +876,6 @@ function fallbackCopy(text, cb) {
     if (cb) cb();
 }
 
-/* ============================================================
-   报价文本生成（网页弹窗预览用）
-   ============================================================ */
 function generateBOMText() {
   var text = '';
   for (var r = 0; r < rows.length; r++) {
@@ -973,7 +883,6 @@ function generateBOMText() {
     var bom = calcRowBOM(row.shelves);
     if (!bom) continue;
 
-    // 统计每个尺寸的灯条数量
     var barCount = {};
     for (var i = 0; i < row.shelves.length; i++) {
       var s = row.shelves[i];
@@ -981,21 +890,15 @@ function generateBOMText() {
       barCount[key] = (barCount[key] || 0) + s.levels;
     }
     var barsText = [];
-    for (var k in barCount) {
-      barsText.push(k + '"x' + barCount[k]);
-    }
+    for (var k in barCount) { barsText.push(k + '"x' + barCount[k]); }
 
     text += 'Row ' + (r + 1) + ' (' + row.shelves.length + ' shelves): ';
     text += 'Bars=' + barsText.join(', ');
     text += ', Tracks=' + bom.tracks;
 
     var driversText = [];
-    for (var w in bom.drivers) {
-      driversText.push(w + 'x' + bom.drivers[w]);
-    }
-    if (driversText.length) {
-      text += ', Drivers=' + driversText.join('+');
-    }
+    for (var w in bom.drivers) { driversText.push(w + 'x' + bom.drivers[w]); }
+    if (driversText.length) { text += ', Drivers=' + driversText.join('+'); }
     text += ', AC=' + bom.ac;
     text += ', Ext=' + bom.extensions;
     text += ', Subtotal=$' + calcRowSubtotal(row).toFixed(2);
@@ -1004,16 +907,24 @@ function generateBOMText() {
   return text;
 }
 
-   function generateQuoteText() {
+function generateQuoteText() {
     var now = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     var line = '=======================================================';
     var dash = '-------------------------------------------------------';
 
     var text = '';
     text += line + '\n';
-    text += '           TITATEC LIGHTING\n';
-    text += '           OFFICIAL QUOTE\n';
-    text += line + '\n\n';
+    if (currentIsPendingReview) {
+        text += '         QUOTE REQUEST RECEIVED (PENDING)\n';
+        text += line + '\n\n';
+        text += '  ⏳ STATUS: PENDING REVIEW\n';
+        text += "  Your custom price is below our standard range.\n";
+        text += '  Our team will review it to provide an accurate quote.\n\n';
+    } else {
+        text += '           TITATEC LIGHTING\n';
+        text += '           OFFICIAL QUOTE\n';
+        text += line + '\n\n';
+    }
     text += '  Quote No:         ' + currentQuoteNo + '\n';
     text += '  Date:             ' + now + '\n';
     text += '  Store:            ' + storeName + '\n';
@@ -1034,15 +945,15 @@ function generateBOMText() {
         text += '  ' + row.name + '\n';
         text += '  ' + dash.substring(0, row.name.length + 4) + '\n';
 
-      for (var s = 0; s < row.shelves.length; s++) {
-      var shelf = row.shelves[s];
-      totalShelves += shelf.levels;
-        text += '    ' + shelf.name + '\n';
-        text += '      Length:     ' + shelf.length + ' inch\n';
-        text += '      Levels:     ' + shelf.levels + '\n\n';
-}
-      text += '  ' + row.name + ' Subtotal: $' + rowSubtotal.toFixed(2) + '\n';
-      text += '    (including power tracks, LED drivers, AC plug and all accessories)\n\n';
+        for (var s = 0; s < row.shelves.length; s++) {
+            var shelf = row.shelves[s];
+            totalShelves += shelf.levels;
+            text += '    ' + shelf.name + '\n';
+            text += '      Length:     ' + shelf.length + ' inch\n';
+            text += '      Levels:     ' + shelf.levels + '\n\n';
+        }
+        text += '  ' + row.name + ' Subtotal: $' + rowSubtotal.toFixed(2) + '\n';
+        text += '    (including power tracks, LED drivers, AC plug and all accessories)\n\n';
     }
 
     var installChecked = needInstallCheckbox.checked;
@@ -1054,16 +965,20 @@ function generateBOMText() {
     text += dash + '\n\n';
     text += '  Total Rows:            ' + rows.length + '\n';
     text += '  Total Shelves:         ' + totalShelves + '\n\n';
-    if (installChecked) {
+        if (installChecked) {
         text += '  Installation Service:  $' + installFee.toFixed(2) + '\n';
     } else {
         text += '  Installation Service:  Not Included\n';
     }
     var gt = calcGrandTotal();
-      text += '\n' + line + '\n';
-    text += '  GRAND TOTAL:           $' + gt.final.toFixed(2) + '\n';
+    text += '\n' + line + '\n';
+    if (currentIsPendingReview) {
+        text += '  REQUESTED TOTAL:       $' + gt.final.toFixed(2) + ' (Pending)\n';
+    } else {
+        text += '  GRAND TOTAL:           $' + gt.final.toFixed(2) + '\n';
+    }
     text += line + '\n\n';
-    text += '  All necessary tracks, LED drivers, and connection cables are\n';
+    text += '  All necessary power tracks, LED drivers, and connection cables are\n';
     text += '  automatically included in this quote - no additional parts\n';
     text += '  need to be purchased for installation.\n\n';
     text += '  Once your order is placed, we will provide a detailed\n';
@@ -1077,9 +992,6 @@ function generateBOMText() {
     return text;
 }
 
-/* ============================================================
-   报价 HTML 版（用于邮件，表格形式）
-   ============================================================ */
 function generateQuoteHtml() {
     var now = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -1099,31 +1011,31 @@ function generateQuoteHtml() {
         var rowSubtotal = calcRowSubtotal(row);
         grandTotal += rowSubtotal;
 
-       for (var s = 0; s < row.shelves.length; s++) {
-     var shelf = row.shelves[s];
-      totalShelves += shelf.levels;
+        for (var s = 0; s < row.shelves.length; s++) {
+            var shelf = row.shelves[s];
+            totalShelves += shelf.levels;
 
-     var rowLabel = (s === 0) ? esc(row.name) : '';
-     var rowLabelCell = rowLabel
-     ? '<td style="' + tdStyle + 'font-weight:600;color:#2563eb;vertical-align:top;">' + rowLabel + '</td>'
-     : '<td style="' + tdMuted + 'vertical-align:top;"></td>';
+            var rowLabel = (s === 0) ? esc(row.name) : '';
+            var rowLabelCell = rowLabel
+                ? '<td style="' + tdStyle + 'font-weight:600;color:#2563eb;vertical-align:top;">' + rowLabel + '</td>'
+                : '<td style="' + tdMuted + 'vertical-align:top;"></td>';
 
-     detailRows += '<tr>' +
-      rowLabelCell +
-     '<td style="' + tdStyle + '">' + esc(shelf.name) + '</td>' +
-     '<td style="' + tdRight + '">' + shelf.length + '&quot;</td>' +
-     '<td style="' + tdRight + '">' + shelf.levels + '</td>' +
-     '<td style="' + tdRight + '">—</td>' +
-     '</tr>';
-    }
+            detailRows += '<tr>' +
+                rowLabelCell +
+                '<td style="' + tdStyle + '">' + esc(shelf.name) + '</td>' +
+                '<td style="' + tdRight + '">' + shelf.length + '&quot;</td>' +
+                '<td style="' + tdRight + '">' + shelf.levels + '</td>' +
+                '<td style="' + tdRight + '">—</td>' +
+                '</tr>';
+        }
 
         detailRows += '<tr>' +
-        '<td colspan="4" style="' + subtotalLabel + '">' + esc(row.name) + ' Subtotal</td>' +
-        '<td style="' + subtotalTd + '">$' + rowSubtotal.toFixed(2) + '</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td colspan="5" style="padding:6px 12px;font-size:11px;color:#2563eb;text-align:right;border:1px solid #e5ebf3;border-top:none;background:#f1f5f9;">(including power tracks, LED drivers, AC plug and all accessories)</td>' +
-        '</tr>';
+            '<td colspan="4" style="' + subtotalLabel + '">' + esc(row.name) + ' Subtotal</td>' +
+            '<td style="' + subtotalTd + '">$' + rowSubtotal.toFixed(2) + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td colspan="5" style="padding:6px 12px;font-size:11px;color:#2563eb;text-align:right;border:1px solid #e5ebf3;border-top:none;background:#f1f5f9;">(including power tracks, LED drivers, AC plug and all accessories)</td>' +
+            '</tr>';
     }
 
     var installChecked = needInstallCheckbox.checked;
@@ -1140,7 +1052,7 @@ function generateQuoteHtml() {
     var html = '';
     html += '<div style="font-family:Arial,Helvetica,sans-serif;max-width:720px;margin:0 auto;color:#1e293b;">';
 
-       html += '<div style="background:#ffffff;padding:10px 32px;border-radius:12px 12px 0 0;border:1px solid #e5ebf3;border-bottom:none;">';
+    html += '<div style="background:#ffffff;padding:10px 32px;border-radius:12px 12px 0 0;border:1px solid #e5ebf3;border-bottom:none;">';
     html += '<table style="width:100%;border-collapse:collapse;"><tr>';
     html += '<td style="vertical-align:middle;">';
     html += '<table style="border-collapse:collapse;"><tr>';
@@ -1149,7 +1061,7 @@ function generateQuoteHtml() {
     html += '</td>';
     html += '<td style="vertical-align:middle;border-left:1px solid #e5ebf3;padding-left:14px;">';
     html += '<div style="font-size:16px;font-weight:700;color:#0f172a;letter-spacing:1.5px;line-height:1.2;">TITATEC LIGHTING</div>';
-    html += '<div style="font-size:11px;color:#64748b;letter-spacing:2px;margin-top:4px;">PROFESSIONAL LED LIGHTING</div>';
+    html += '<div style="font-size:11px;color:#64748b;letter-spacing:2px;margin-top:4px;">PROFESSIONAL GONDOLA LIGHTS</div>';
     html += '</td>';
     html += '</tr></table>';
     html += '</td>';
@@ -1202,13 +1114,10 @@ function generateQuoteHtml() {
     html += '<div style="margin-top:10px;font-size:16px;color:#2563eb;font-weight:700;line-height:1.6;text-align:center;">';
     html += '📐 Once your order is placed, we will provide a detailed electrical wiring diagram to guide you through the installation.';
     html += '</div>';
-        // 页脚：感谢 + 联系方式
     html += '<div style="padding:18px 28px 12px;text-align:center;font-size:12px;color:#94a3b8;">';
     html += 'Thank you for your business!<br>';
     html += 'For questions, please contact <a href="mailto:' + MY_EMAIL + '" style="color:#2563eb;text-decoration:none;">' + MY_EMAIL + '</a>';
     html += '</div>';
-
-    // 品牌承诺区（质保 + 模块化 + 售后）
     html += '<div style="padding:16px 28px;text-align:center;background:#f8fafc;border-top:1px solid #e5ebf3;">';
     html += '<span style="color:#2563eb;font-weight:700;font-size:12px;">🛡️ 3-Year Limited Warranty</span>';
     html += '<span style="color:#cbd5e1;padding:0 8px;">|</span>';
@@ -1218,20 +1127,117 @@ function generateQuoteHtml() {
     html += '<br>';
     html += '<span style="font-size:11px;color:#94a3b8;margin-top:6px;display:inline-block;">3-Year limited warranty on LED bars and drivers. Modular design for easy field replacement.</span>';
     html += '</div>';
-
-    // 品牌标语
     html += '<div style="padding:14px 28px;text-align:center;font-size:12px;color:#94a3b8;">';
     html += 'Titatec Lighting | Professional LED lighting for retail shelving';
     html += '</div>';
-
     html += '</div>';
     return html;
 }
 
-console.log('Titatec Lighting Quote Estimator ready.');
+function generatePendingHtml() {
+    var now = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    var thStyle = 'padding:10px 12px;text-align:left;background:#f59e0b;color:#ffffff;font-size:13px;font-weight:600;border:1px solid #fde68a;';
+    var thRight = thStyle + 'text-align:right;';
+    var tdStyle = 'padding:10px 12px;font-size:13px;color:#1e293b;border:1px solid #e5ebf3;';
+    var tdRight = tdStyle + 'text-align:right;';
+    var tdMuted = tdStyle + 'color:#94a3b8;font-size:12px;';
+
+    var detailRows = '';
+
+    for (var r = 0; r < rows.length; r++) {
+        var row = rows[r];
+        for (var s = 0; s < row.shelves.length; s++) {
+            var shelf = row.shelves[s];
+            var rowLabel = (s === 0) ? esc(row.name) : '';
+            var rowLabelCell = rowLabel
+                ? '<td style="' + tdStyle + 'font-weight:600;color:#f59e0b;vertical-align:top;">' + rowLabel + '</td>'
+                : '<td style="' + tdMuted + 'vertical-align:top;"></td>';
+
+            detailRows += '<tr>' +
+                rowLabelCell +
+                '<td style="' + tdStyle + '">' + esc(shelf.name) + '</td>' +
+                '<td style="' + tdRight + '">' + shelf.length + '&quot;</td>' +
+                '<td style="' + tdRight + '">' + shelf.levels + '</td>' +
+                '<td style="' + tdRight + 'color:#f59e0b;font-weight:600;">Pending</td>' +
+                '</tr>';
+        }
+    }
+
+    var html = '';
+    html += '<div style="font-family:Arial,Helvetica,sans-serif;max-width:720px;margin:0 auto;color:#1e293b;">';
+
+    html += '<div style="background:#ffffff;padding:10px 32px;border-radius:12px 12px 0 0;border:1px solid #e5ebf3;border-bottom:none;">';
+    html += '<table style="width:100%;border-collapse:collapse;"><tr>';
+    html += '<td style="vertical-align:middle;">';
+    html += '<table style="border-collapse:collapse;"><tr>';
+    html += '<td style="vertical-align:middle;padding-right:14px;">';
+    html += '<img src="https://gondolalights.com/TITATEC-logo-400.png" alt="Titatec Lighting" style="height:72px;display:block;max-width:240px;" />';
+    html += '</td>';
+    html += '<td style="vertical-align:middle;border-left:1px solid #e5ebf3;padding-left:14px;">';
+    html += '<div style="font-size:16px;font-weight:700;color:#0f172a;letter-spacing:1.5px;line-height:1.2;">TITATEC LIGHTING</div>';
+    html += '<div style="font-size:11px;color:#64748b;letter-spacing:2px;margin-top:4px;">PROFESSIONAL GONDOLA LIGHTS</div>';
+    html += '</td></tr></table></td>';
+    html += '<td style="text-align:right;vertical-align:middle;color:#f59e0b;font-size:13px;letter-spacing:3px;font-weight:700;">QUOTE REQUEST RECEIVED</td>';
+    html += '</tr></table></div>';
+
+    html += '<div style="padding:16px 28px;background:#fffbeb;border-left:4px solid #f59e0b;border-right:1px solid #fde68a;border-top:1px solid #fde68a;border-bottom:1px solid #fde68a;">';
+    html += '<div style="font-size:13px;font-weight:700;color:#b45309;margin-bottom:6px;">⏳ Status: Pending Review (Custom price below standard range)</div>';
+    html += '<div style="font-size:13px;color:#92400e;line-height:1.6;">Your custom price is below our standard range. We&#39;ve received your request and our team will review it to provide an accurate quote.</div>';
+    html += '</div>';
+
+    html += '<div style="padding:20px 28px;background:#f8fafc;border:1px solid #e5ebf3;border-top:none;">';
+    html += '<table style="width:100%;border-collapse:collapse;font-size:13px;">';
+    html += '<tr><td style="padding:3px 0;color:#64748b;width:130px;">Request No:</td><td style="padding:3px 0;font-weight:600;color:#0f172a;">' + esc(currentQuoteNo) + '</td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Date:</td><td style="padding:3px 0;">' + now + '</td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Store:</td><td style="padding:3px 0;font-weight:600;color:#0f172a;">' + esc(storeName) + '</td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Prepared by:</td><td style="padding:3px 0;">Titatec Lighting Sales Team</td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Email:</td><td style="padding:3px 0;">' + MY_EMAIL + '</td></tr>';
+    html += '<tr><td style="padding:3px 0;color:#64748b;">Official website:</td><td style="padding:3px 0;"><a href="https://gondolalights.com" style="color:#f59e0b;text-decoration:none;">https://gondolalights.com</a></td></tr>';
+    html += '</table></div>';
+
+    html += '<div style="padding:20px 28px;border:1px solid #e5ebf3;border-top:none;">';
+    html += '<div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:12px;">Request Details</div>';
+    html += '<table style="width:100%;border-collapse:collapse;">';
+    html += '<thead><tr>';
+    html += '<th style="' + thStyle + '">Row</th>';
+    html += '<th style="' + thStyle + '">Shelf</th>';
+    html += '<th style="' + thRight + '">Length</th>';
+    html += '<th style="' + thRight + '">Levels</th>';
+    html += '<th style="' + thRight + '">Subtotal</th>';
+    html += '</tr></thead><tbody>';
+    html += detailRows;
+    html += '</tbody></table>';
+    html += '<div style="margin-top:12px;padding:10px 14px;background:#fffbeb;border-radius:8px;font-size:12px;color:#92400e;line-height:1.6;">';
+    html += 'Your final pricing will be calculated and sent to you after our team reviews this request.';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div style="padding:18px 28px 12px;text-align:center;font-size:12px;color:#94a3b8;">';
+    html += 'Thank you for your interest!<br>';
+    html += 'For questions, please contact <a href="mailto:' + MY_EMAIL + '" style="color:#f59e0b;text-decoration:none;">' + MY_EMAIL + '</a>';
+    html += '</div>';
+
+    html += '<div style="padding:16px 28px;text-align:center;background:#f8fafc;border-top:1px solid #e5ebf3;">';
+    html += '<span style="color:#2563eb;font-weight:700;font-size:12px;">🛡️ 3-Year Limited Warranty</span>';
+    html += '<span style="color:#cbd5e1;padding:0 8px;">|</span>';
+    html += '<span style="color:#2563eb;font-weight:700;font-size:12px;">🔧 Modular Components</span>';
+    html += '<span style="color:#cbd5e1;padding:0 8px;">|</span>';
+    html += '<span style="color:#2563eb;font-weight:700;font-size:12px;">📞 Dedicated Support</span>';
+    html += '</div>';
+
+    html += '<div style="padding:14px 28px;text-align:center;font-size:12px;color:#94a3b8;">';
+    html += 'Titatec Lighting | Professional LED lighting for retail shelving';
+    html += '</div>';
+    html += '</div>';
+    return html;
+}
+
+console.log('Titatec Lighting Quote Estimator ready. Path A/B split enabled.');
 </script>
+
 <!-- ===== Footer ===== -->
-<footer class="site-footer">
+<footer class="site-footer full-footer">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
@@ -1284,6 +1290,27 @@ console.log('Titatec Lighting Quote Estimator ready.');
     </div>
   </div>
 </footer>
+
+<!-- ===== 嵌入式精简版页脚（仅在 iframe 中显示） ===== -->
+<div class="embed-only compact-footer">
+  <div class="compact-trust">
+    <span>🛡️ 3-Year Limited Warranty</span>
+    <span>📐 Free Wiring Diagram</span>
+    <span>📧 Email Quote Included</span>
+    <span>📞 US-based Support</span>
+  </div>
+  <p class="compact-copy">
+    © 2026 TITATEC · Operated by Capitec Inc. · 
+    <a href="/privacy-policy.html">Privacy</a> · 
+    <a href="/terms-of-service.html">Terms</a>
+  </p>
+</div>
+
+<script>
+  if (window.self !== window.top) {
+    document.body.classList.add('is-embedded');
+  }
+</script>
 
 </body>
 </html>
