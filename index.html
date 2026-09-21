@@ -746,16 +746,14 @@ body.menu-open .mobile-menu{display:flex}
 </div>
 <!-- ===== Header ===== -->
 <header class="site-header" id="siteHeader">
-  <div style="width:100%;background:#0F1B30;padding:6px 20px;margin:0;">
-  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:22px;align-items:center;color:#fff;font-size:14px;justify-content:center;">
-    <span>➔ Free delivery for orders over $99</span>
-    <span>➔ 24/7 Dedicated support</span>
-    <span>➔ 100% secure payment</span>
-    <span>➔ 30-day hassle-free returns for non-custom items</span>
+  <div class="announce-bar">
+  <div class="announce-inner">
+    <span class="announce-item">→ Free delivery for orders over $99</span>
+    <span class="announce-item">→ 24/7 Dedicated support</span>
+    <span class="announce-item">→ 100% secure payment</span>
+    <span class="announce-item">→ 30-day hassle-free returns for non-custom items</span>
   </div>
 </div>
-
-
   <div class="container nav">
   <a href="#home" class="brand" aria-label="TITATEC home">
   <img src="assets/images/titatec-logo-480-240_copy.png" alt="TITATEC" style="height: 48px; width: auto; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -1980,6 +1978,62 @@ font-weight:600 !important;
 header nav a.active{
 color:#000000 !important;
 font-weight:700 !important;
+}
+        /* ===== 公告栏基础样式（桌面端） ===== */
+.announce-bar {
+  width: 100%;
+  background: #0F1B30;
+  padding: 6px 20px;
+  margin: 0;
+}
+.announce-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  align-items: center;
+  color: #fff;
+  font-size: 14px;
+  justify-content: center;
+}
+.announce-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===== 手机端公告栏轮播 ===== */
+@media (max-width: 768px) {
+  .announce-inner {
+    display: block !important;
+    position: relative;
+    height: 30px;
+    overflow: hidden;
+    padding: 0 16px;
+  }
+  .announce-item {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 30px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: announceCycle 16s infinite;
+  }
+  .announce-item:nth-child(1) { animation-delay: 0s; }
+  .announce-item:nth-child(2) { animation-delay: 4s; }
+  .announce-item:nth-child(3) { animation-delay: 8s; }
+  .announce-item:nth-child(4) { animation-delay: 12s; }
+}
+
+@keyframes announceCycle {
+  0%     { opacity: 0; }
+  6.25%  { opacity: 1; }
+  25%    { opacity: 1; }
+  31.25% { opacity: 0; }
+  100%   { opacity: 0; }
 }
 </style>
 <table style="box-sizing:border-box;width:100%;max-width:100%;border-collapse:collapse;background:#f7f8fa;color:#222;font-size:15px;line-height:1.3;">
