@@ -35,7 +35,7 @@
   }
 
   /* ============================================================
-     页头：左侧品牌 + 右侧 Notes
+     页头
      ============================================================ */
   .doc-header {
     display: flex;
@@ -81,7 +81,6 @@
     font-size: 10px;
     color: #475569;
     line-height: 1.4;
-    text-align: left;
     padding-top: 2px;
   }
   .header-notes .notes-title {
@@ -133,37 +132,64 @@
   }
 
   /* ============================================================
-     图纸区（现在改成嵌入 PDF）
+     图纸区（下载 PDF 按钮）
      ============================================================ */
   .diagram-area {
     flex: 1;
-    padding: 4px 20px 6px;
+    padding: 20px;
     display: flex;
-    align-items: stretch;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     background: #fff;
     min-height: 400px;
-    overflow: hidden;
-  }
-  .diagram-area iframe,
-  .diagram-area embed {
-    width: 100%;
-    height: 100%;
-    min-height: 500px;
-    border: 1px solid #e5ebf3;
-    border-radius: 6px;
-    background: #fff;
-    display: block;
-  }
-  .diagram-area .placeholder {
-    color: #94a3b8;
-    font-size: 14px;
+    gap: 16px;
     text-align: center;
-    padding: 60px 20px;
-    border: 2px dashed #cbd5e1;
-    border-radius: 8px;
-    width: 100%;
-    align-self: center;
+  }
+  .diagram-area .pdf-icon {
+    font-size: 72px;
+    line-height: 1;
+  }
+  .diagram-area .pdf-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .diagram-area .pdf-subtitle {
+    font-size: 13px;
+    color: #64748b;
+    max-width: 480px;
+    line-height: 1.6;
+  }
+  .diagram-area .pdf-hint {
+    font-size: 11.5px;
+    color: #94a3b8;
+    max-width: 480px;
+    line-height: 1.6;
+    margin-top: -4px;
+  }
+  .diagram-area .pdf-download-btn {
+    display: inline-block;
+    background: #2563eb;
+    color: #fff;
+    padding: 14px 42px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: 0.2s;
+    margin-top: 6px;
+  }
+  .diagram-area .pdf-download-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+  }
+  .diagram-area .pdf-file-info {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 6px;
+    word-break: break-all;
+    max-width: 480px;
   }
 
   /* ============================================================
@@ -198,12 +224,12 @@
   }
 
   /* ============================================================
-     打印时
+     打印时：只保留页头、信息栏、下载提示
      ============================================================ */
   @media print {
     @page {
       size: 297mm 210mm;
-      margin: 5mm;
+      margin: 6mm;
     }
 
     body {
@@ -215,12 +241,9 @@
       box-shadow: none;
       border-radius: 0;
       max-width: 100%;
-      min-height: 100%;
-      height: 200mm;
-      overflow: hidden;
+      min-height: auto;
+      height: auto;
       page-break-inside: avoid;
-      page-break-after: avoid;
-      page-break-before: avoid;
       break-inside: avoid;
     }
 
@@ -234,10 +257,7 @@
     .print-bar { display: none; }
 
     /* ---- 页头 ---- */
-    .doc-header {
-      padding: 5px 20px 4px;
-      gap: 16px;
-    }
+    .doc-header { padding: 5px 20px 4px; gap: 16px; }
     .doc-header .brand { gap: 10px; }
     .doc-header .brand img { height: 36px; }
     .doc-header .brand .divider { height: 28px; }
@@ -272,17 +292,23 @@
 
     /* ---- 图纸区（打印时）---- */
     .diagram-area {
-      padding: 3px 18px 4px;
+      padding: 40px 20px;
       flex: 1;
       min-height: auto;
-      overflow: hidden;
+      gap: 14px;
     }
-    .diagram-area iframe,
-    .diagram-area embed {
-      min-height: 0;
-      height: 100%;
-      width: 100%;
+    .diagram-area .pdf-icon { font-size: 64px; }
+    .diagram-area .pdf-title { font-size: 18px; }
+    .diagram-area .pdf-subtitle { font-size: 12px; }
+    .diagram-area .pdf-hint { font-size: 10.5px; }
+    .diagram-area .pdf-download-btn {
+      background: transparent;
+      color: #2563eb;
+      border: 2px solid #2563eb;
+      padding: 10px 30px;
+      font-size: 13px;
     }
+    .diagram-area .pdf-file-info { font-size: 10px; }
   }
 </style>
 </head>
@@ -344,19 +370,24 @@
     </div>
   </div>
 
-  <!-- 图纸区（嵌入 PDF） -->
+  <!-- 图纸区（下载 PDF 按钮） -->
   <div class="diagram-area">
-    <iframe
-      id="fieldDiagram"
-      src="https://gondolalights.com/diagrams/Black-Jack-shelf-01-20260922.pdf"
-      type="application/pdf"
-      title="Wiring Diagram"
-      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    </iframe>
-    <div class="placeholder" style="display:none;">
-      📄 PDF diagram placeholder<br>
-      <span style="font-size:12px;">Replace the iframe src above with your PDF URL</span>
+    <div class="pdf-icon">📄</div>
+    <div class="pdf-title">Wiring Diagram (PDF)</div>
+    <div class="pdf-subtitle">
+      High-resolution PDF file for printing. Please download and open it in a PDF viewer for the best print quality.
     </div>
+    <a id="fieldDiagramLink"
+       href="https://gondolalights.com/diagrams/shelf-ends-and-sujukh1.pdf"
+       target="_blank"
+       download
+       class="pdf-download-btn">
+      📥 Download PDF
+    </a>
+    <div class="pdf-hint">
+      💡 Tip: After downloading, open the PDF and print it directly from your PDF viewer (A4 Landscape recommended).
+    </div>
+    <div class="pdf-file-info" id="fieldDiagramInfo">shelf-ends-and-sujukh1.pdf</div>
   </div>
 
 </div>
@@ -387,7 +418,15 @@
     // 图纸：支持 URL 参数指定 PDF 地址
     var diagramUrl = params.get('diagram');
     if (diagramUrl) {
-      document.getElementById('fieldDiagram').src = diagramUrl;
+      var link = document.getElementById('fieldDiagramLink');
+      if (link) link.href = diagramUrl;
+
+      var info = document.getElementById('fieldDiagramInfo');
+      if (info) {
+        // 从 URL 里提取文件名（最后一个 / 之后的部分）
+        var filename = diagramUrl.split('/').pop().split('?')[0];
+        info.textContent = decodeURIComponent(filename);
+      }
     }
   })();
 </script>
