@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="https://gondolalights.com/favicon.svg" type="image/svg+xml">
 <title>Wiring Diagram Link Generator - TITATEC Internal</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -156,6 +157,13 @@
     line-height: 1.7;
   }
   .tip strong { color: #92400e; }
+  .tip code {
+    background: #fff;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    border: 1px solid #fde68a;
+  }
 </style>
 </head>
 <body>
@@ -166,21 +174,21 @@
 
   <div class="field">
     <label>Store Name <span class="hint">客户店铺名</span></label>
-    <input type="text" id="inStore" placeholder="e.g. Black Store" />
+    <input type="text" id="inStore" placeholder="e.g. Black Jack" />
   </div>
 
   <div class="field">
     <label>Quote No <span class="hint">报价单号</span></label>
-    <input type="text" id="inQuote" placeholder="e.g. TIT-20260921-RDZR" />
+    <input type="text" id="inQuote" placeholder="e.g. TIT-20260922-TEST" />
   </div>
 
   <div class="field">
     <label>Config <span class="hint">配置描述</span></label>
-    <input type="text" id="inConfig" placeholder="e.g. 6 sections, 4ft, 8pcs × 2kits" />
+    <input type="text" id="inConfig" placeholder="e.g. Shelf-01, 6 sections, 4ft" />
   </div>
 
   <div class="field">
-    <label>Diagram URL <span class="hint">图纸链接（Google Drive 直链或自己的服务器 URL）</span></label>
+    <label>Diagram URL <span class="hint">图纸链接</span></label>
     <input type="text" id="inDiagram" placeholder="e.g. https://gondolalights.com/diagrams/xxx.png" />
   </div>
 
@@ -198,9 +206,9 @@
 
   <div class="tip">
     <strong>💡 Tips:</strong><br>
-    • 图纸上传到 GitHub 后，URL 格式：<code>https://gondolalights.com/diagrams/文件名.png</code><br>
-    • 生成的链接可以直接放进邮件，客户点开就能打印<br>
-    • 用完后点 "Clear" 清空表单，准备下一个客户
+    • Diagram URL format: <code>https://gondolalights.com/diagrams/filename.png</code><br>
+    • Generated links can be pasted into emails — customers can open and print instantly<br>
+    • After use, click "Clear" to reset the form for the next customer
   </div>
 </div>
 
