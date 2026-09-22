@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wiring Diagram Link Generator - TITATEC Internal</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    background: #f4f7fc;
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #1e293b;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,20,40,0.08);
+    padding: 36px 40px;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 28px;
+  }
+  .field {
+    margin-bottom: 18px;
+  }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
+  }
+  .field label .hint {
+    font-weight: 400;
+    color: #94a3b8;
+    font-size: 12px;
+    margin-left: 6px;
+  }
+  .field input {
+    width: 100%;
+    border: 1.5px solid #dce1e8;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #0f172a;
+    outline: none;
+    transition: 0.2s;
+    font-family: inherit;
+  }
+  .field input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+  }
+  .btn-generate {
+    width: 100%;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: 0.2s;
+  }
+  .btn-generate:hover {
+    background: #1d4ed8;
+  }
+  .result {
+    margin-top: 24px;
+    padding: 20px;
+    background: #f8fafc;
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 12px;
+    display: none;
+  }
+  .result.active {
+    display: block;
+  }
+  .result-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 10px;
+  }
+  .result-url {
+    width: 100%;
+    border: 1px solid #e5ebf3;
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    color: #1e293b;
+    word-break: break-all;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    min-height: 80px;
+    resize: vertical;
+  }
+  .result-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .result-actions button,
+  .result-actions a {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+  }
+  .btn-copy {
+    background: #2563eb;
+    color: #fff;
+  }
+  .btn-copy:hover { background: #1d4ed8; }
+  .btn-open {
+    background: #10b981;
+    color: #fff;
+  }
+  .btn-open:hover { background: #059669; }
+  .btn-clear {
+    background: #e2e8f0;
+    color: #1e293b;
+  }
+  .btn-clear:hover { background: #cbd5e1; }
+  .tip {
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: #78350f;
+    line-height: 1.7;
+  }
+  .tip strong { color: #92400e; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>📐 Wiring Diagram Link Generator</h1>
+  <div class="subtitle">Internal tool — fill the form to generate a customer-ready link.</div>
+
+  <div class="field">
+    <label>Store Name <span class="hint">客户店铺名</span></label>
+    <input type="text" id="inStore" placeholder="e.g. Black Store" />
+  </div>
+
+  <div class="field">
+    <label>Quote No <span class="hint">报价单号</span></label>
+    <input type="text" id="inQuote" placeholder="e.g. TIT-20260921-RDZR" />
+  </div>
+
+  <div class="field">
+    <label>Config <span class="hint">配置描述</span></label>
+    <input type="text" id="inConfig" placeholder="e.g. 6 sections, 4ft, 8pcs × 2kits" />
+  </div>
+
+  <div class="field">
+    <label>Diagram URL <span class="hint">图纸链接（Google Drive 直链或自己的服务器 URL）</span></label>
+    <input type="text" id="inDiagram" placeholder="e.g. https://gondolalights.com/diagrams/xxx.png" />
+  </div>
+
+  <button class="btn-generate" onclick="generateLink()">🔗 Generate Link</button>
+
+  <div class="result" id="result">
+    <div class="result-title">✅ Generated URL (copy and send to customer):</div>
+    <textarea class="result-url" id="resultUrl" readonly></textarea>
+    <div class="result-actions">
+      <button class="btn-copy" onclick="copyUrl()">📋 Copy URL</button>
+      <a class="btn-open" id="openLink" href="#" target="_blank">🚀 Open & Print</a>
+      <button class="btn-clear" onclick="clearForm()">🗑️ Clear</button>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>💡 Tips:</strong><br>
+    • 图纸上传到 GitHub 后，URL 格式：<code>https://gondolalights.com/diagrams/文件名.png</code><br>
+    • 生成的链接可以直接放进邮件，客户点开就能打印<br>
+    • 用完后点 "Clear" 清空表单，准备下一个客户
+  </div>
+</div>
+
+<script>
+  function generateLink() {
+    var store   = document.getElementById('inStore').value.trim();
+    var quote   = document.getElementById('inQuote').value.trim();
+    var config  = document.getElementById('inConfig').value.trim();
+    var diagram = document.getElementById('inDiagram').value.trim();
+
+    if (!store && !quote && !config && !diagram) {
+      alert('Please fill at least one field.');
+      return;
+    }
+
+    // 拼接参数
+    var params = [];
+    if (store)   params.push('store='   + encodeURIComponent(store));
+    if (quote)   params.push('quote='   + encodeURIComponent(quote));
+    if (config)  params.push('config='  + encodeURIComponent(config));
+    if (diagram) params.push('diagram=' + encodeURIComponent(diagram));
+
+    // 生成 URL（假设生成器页面和 wiring-diagram.html 在同一个目录下）
+    var baseUrl = window.location.origin + window.location.pathname.replace('diagram-link-generator.html', 'wiring-diagram.html');
+    var finalUrl = baseUrl + '?' + params.join('&');
+
+    // 显示结果
+    document.getElementById('resultUrl').value = finalUrl;
+    document.getElementById('openLink').href = finalUrl;
+    document.getElementById('result').classList.add('active');
+  }
+
+  function copyUrl() {
+    var urlField = document.getElementById('resultUrl');
+    urlField.select();
+    urlField.setSelectionRange(0, 99999);
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(urlField.value).then(function() {
+        alert('✅ URL copied to clipboard!');
+      }).catch(function() {
+        document.execCommand('copy');
+        alert('✅ URL copied to clipboard!');
+      });
+    } else {
+      document.execCommand('copy');
+      alert('✅ URL copied to clipboard!');
+    }
+  }
+
+  function clearForm() {
+    document.getElementById('inStore').value   = '';
+    document.getElementById('inQuote').value   = '';
+    document.getElementById('inConfig').value  = '';
+    document.getElementById('inDiagram').value = '';
+    document.getElementById('result').classList.remove('active');
+  }
+</script>
+
+</body>
+</html>
