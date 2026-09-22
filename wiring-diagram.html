@@ -6,12 +6,9 @@
 <link rel="icon" href="https://gondolalights.com/favicon.svg" type="image/svg+xml">
 <title>Wiring Diagram - TITATEC Lighting</title>
 <style>
-  /* ============================================================
-     打印专用设置：A4 横版（用毫米尺寸，兼容性最好）
-     ============================================================ */
   @page {
     size: 297mm 210mm;
-    margin: 8mm;
+    margin: 6mm;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,9 +22,6 @@
     line-height: 1.5;
   }
 
-  /* ============================================================
-     主容器：模拟 A4 纸张
-     ============================================================ */
   .sheet {
     max-width: 1123px;
     min-height: 794px;
@@ -40,63 +34,59 @@
     flex-direction: column;
   }
 
-  /* ============================================================
-     页头
-     ============================================================ */
+  /* 页头 */
   .doc-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 28px;
+    padding: 12px 26px;
     border-bottom: 2px solid #2563eb;
     background: #fff;
   }
   .doc-header .brand {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
   }
   .doc-header .brand img {
-    height: 56px;
+    height: 50px;
     display: block;
   }
   .doc-header .brand .divider {
     width: 1px;
-    height: 42px;
+    height: 38px;
     background: #e5ebf3;
   }
   .doc-header .brand-text .name {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
     color: #0f172a;
     letter-spacing: 1.5px;
-    line-height: 1.2;
+    line-height: 1.15;
   }
   .doc-header .brand-text .sub {
-    font-size: 10.5px;
+    font-size: 10px;
     color: #64748b;
     letter-spacing: 2px;
-    margin-top: 3px;
+    margin-top: 2px;
   }
   .doc-header .doc-type {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: #2563eb;
     letter-spacing: 3px;
     text-align: right;
   }
 
-  /* ============================================================
-     信息栏
-     ============================================================ */
+  /* 信息栏 */
   .info-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 5px 28px;
-    padding: 10px 28px;
+    gap: 4px 26px;
+    padding: 8px 26px;
     background: #f8fafc;
     border-bottom: 1px solid #e5ebf3;
-    font-size: 12px;
+    font-size: 11.5px;
   }
   .info-grid .item {
     display: flex;
@@ -105,7 +95,7 @@
   }
   .info-grid .item .label {
     color: #64748b;
-    min-width: 88px;
+    min-width: 84px;
     font-weight: 500;
   }
   .info-grid .item .value {
@@ -113,13 +103,11 @@
     font-weight: 600;
     flex: 1;
     border-bottom: 1px dashed #cbd5e1;
-    padding-bottom: 2px;
-    min-height: 16px;
+    padding-bottom: 1px;
+    min-height: 15px;
   }
 
-  /* ============================================================
-     图纸展示区（主区域）
-     ============================================================ */
+  /* 图纸区 */
   .diagram-area {
     flex: 1;
     padding: 6px 20px;
@@ -132,7 +120,7 @@
   .diagram-area img {
     width: 100%;
     max-width: 100%;
-    max-height: 640px;
+    max-height: 680px;
     height: auto;
     display: block;
     border: 1px solid #e5ebf3;
@@ -150,35 +138,19 @@
     width: 100%;
   }
 
-  /* ============================================================
-     备注 + 页脚
-     ============================================================ */
+  /* 备注 */
   .notes {
-    padding: 6px 28px;
-    font-size: 10.5px;
+    padding: 5px 26px;
+    font-size: 10px;
     color: #475569;
-    line-height: 1.5;
+    line-height: 1.4;
     border-top: 1px solid #e5ebf3;
   }
   .notes strong {
     color: #0f172a;
   }
-  .doc-footer {
-    padding: 8px 28px 10px;
-    text-align: center;
-    font-size: 10px;
-    color: #94a3b8;
-    border-top: 1px solid #e5ebf3;
-    background: #fafcfd;
-  }
-  .doc-footer .highlight {
-    color: #2563eb;
-    font-weight: 600;
-  }
 
-  /* ============================================================
-     打印按钮（仅屏幕显示，打印时隐藏）
-     ============================================================ */
+  /* 打印按钮（屏幕显示）*/
   .print-bar {
     max-width: 1123px;
     margin: 16px auto 0;
@@ -208,13 +180,12 @@
   }
 
   /* ============================================================
-     打印时：强制横版 + 压缩各区域 + 防止分页，确保 1 页
+     打印时：强制横版 + 各区域瘦身 + 图纸尽量放大 + 1 页
      ============================================================ */
   @media print {
-    /* ⭐ 兜底：再次声明横版（兼容性保险） */
     @page {
       size: 297mm 210mm;
-      margin: 8mm;
+      margin: 6mm;
     }
 
     body {
@@ -222,7 +193,6 @@
       padding: 0;
     }
 
-    /* 整体容器：禁止跨页分页 */
     .sheet {
       box-shadow: none;
       border-radius: 0;
@@ -236,57 +206,71 @@
       break-inside: avoid;
     }
 
-    /* 各区块禁止内部跨页 */
     .doc-header,
     .info-grid,
     .diagram-area,
-    .notes,
-    .doc-footer {
+    .notes {
       page-break-inside: avoid;
       break-inside: avoid;
     }
 
-    /* 隐藏打印按钮栏 */
-    .print-bar {
-      display: none;
+    .print-bar { display: none; }
+
+    /* ---- 页头：更瘦 ---- */
+    .doc-header { padding: 6px 20px; }
+    .doc-header .brand { gap: 10px; }
+    .doc-header .brand img { height: 38px; }
+    .doc-header .brand .divider { height: 30px; }
+    .doc-header .brand-text .name { font-size: 15px; letter-spacing: 1px; }
+    .doc-header .brand-text .sub { font-size: 9px; letter-spacing: 1.5px; margin-top: 1px; }
+    .doc-header .doc-type { font-size: 12px; letter-spacing: 2px; }
+
+    /* ---- 信息栏：更瘦 ---- */
+    .info-grid {
+      padding: 5px 20px;
+      gap: 3px 20px;
+      font-size: 10.5px;
+      line-height: 1.3;
     }
+    .info-grid .item .label { min-width: 76px; }
+    .info-grid .item .value { min-height: 13px; padding-bottom: 1px; }
 
-    /* 压缩各区域高度 */
-    .doc-header { padding: 10px 24px; }
-    .doc-header .brand img { height: 46px; }
-    .doc-header .brand-text .name { font-size: 17px; }
-    .info-grid { padding: 7px 24px; gap: 4px 24px; font-size: 11.5px; }
-
-    /* ⭐ 关键：图纸限高 130mm，确保所有内容压 1 页 */
-    .diagram-area { padding: 6px 24px; min-height: auto; }
+    /* ---- 图纸：尽量大 ⭐ ---- */
+    .diagram-area {
+      padding: 4px 20px;
+      min-height: auto;
+      flex: 1;
+    }
     .diagram-area img {
-      max-height: 112mm;
+      max-height: 152mm;   /* 删掉页脚后，图纸再放大 10mm */
       width: auto;
       max-width: 100%;
-      padding: 3px;
+      padding: 2px;
     }
 
-    .notes { padding: 5px 24px; font-size: 10px; }
-    .doc-footer { padding: 5px 24px 6px; font-size: 9.5px; }
+    /* ---- Notes：更瘦 ---- */
+    .notes {
+      padding: 4px 20px;
+      font-size: 9.5px;
+      line-height: 1.35;
+    }
+    .notes > div {
+      margin-top: 3px !important;
+      padding: 4px 8px !important;
+      font-size: 9.5px !important;
+    }
   }
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     打印按钮（仅屏幕显示）
-     ============================================================ -->
 <div class="print-bar">
   <button class="secondary" onclick="window.location.href='https://gondolalights.com'">← Back</button>
   <button onclick="window.print()">🖨️ Print / Save as PDF</button>
 </div>
 
-<!-- ============================================================
-     可打印文档
-     ============================================================ -->
 <div class="sheet">
 
-  <!-- ---------- 页头 ---------- -->
   <div class="doc-header">
     <div class="brand">
       <img src="https://gondolalights.com/TITATEC-logo-400.png" alt="TITATEC Lighting">
@@ -299,7 +283,6 @@
     <div class="doc-type">WIRING DIAGRAM</div>
   </div>
 
-  <!-- ---------- 信息栏 ---------- -->
   <div class="info-grid">
     <div class="item">
       <span class="label">Store:</span>
@@ -327,7 +310,6 @@
     </div>
   </div>
 
-  <!-- ---------- 图纸区 ---------- -->
   <div class="diagram-area">
     <img id="fieldDiagram"
          src="https://gondolalights.com/diagrams/Black-Jack-shelf-01-20260922.png"
@@ -339,7 +321,6 @@
     </div>
   </div>
 
-  <!-- ---------- 备注 ---------- -->
   <div class="notes">
     <strong>Notes:</strong><br>
     1. Keep LED drivers away from heat sources and moisture. Do not exceed the rated load per driver.<br>
@@ -349,17 +330,8 @@
     </div>
   </div>
 
-  <!-- ---------- 页脚 ---------- -->
-  <div class="doc-footer">
-    Titatec Lighting | <span class="highlight">Professional LED lighting for retail shelving</span><br>
-    © 2026 TITATEC. Operated by Capitec Inc. All rights reserved.
-  </div>
-
 </div>
 
-<!-- ============================================================
-     可选：从 URL 参数自动填充字段
-     ============================================================ -->
 <script>
   (function() {
     var params = new URLSearchParams(window.location.search);
